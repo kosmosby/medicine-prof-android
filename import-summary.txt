@@ -1,0 +1,210 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .DS_Store
+* .gitignore
+* .idea/
+* .idea/.name
+* .idea/androidDexCompiler.xml
+* .idea/ant.xml
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/encodings.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/scopes/
+* .idea/scopes/scope_settings.xml
+* .idea/vcs.xml
+* .idea/workspace.xml
+* LICENSE
+* README.md
+* ant.properties
+* build.properties
+* build.xml
+* cache.properties
+* default.properties
+* jitsi-android.eml
+* jitsi-android.iml
+* jitsi-android.ipr
+* lib/
+* lib/android-support-v4.jar
+* lib/asset-bundles/
+* lib/asset-bundles/argdelegation-service.jar
+* lib/asset-bundles/customavatar-service.jar
+* lib/asset-bundles/customcontactactions.jar
+* lib/asset-bundles/dns.jar
+* lib/asset-bundles/fileaccess.jar
+* lib/asset-bundles/googlecontacts-service.jar
+* lib/asset-bundles/hid-service.jar
+* lib/asset-bundles/json.jar
+* lib/asset-bundles/meta-cl.jar
+* lib/asset-bundles/notification-handlers.jar
+* lib/asset-bundles/packetlogging.jar
+* lib/asset-bundles/protocol-jabber.jar
+* lib/asset-bundles/protocol-sip.jar
+* lib/asset-bundles/provdisc-dhcp.jar
+* lib/asset-bundles/provdisc-mdns.jar
+* lib/asset-bundles/provdisc.jar
+* lib/asset-bundles/provisioning.jar
+* lib/asset-bundles/reconnectplugin.jar
+* lib/asset-bundles/replacement-smiley.jar
+* lib/asset-bundles/smacklib.jar
+* lib/bundles/
+* lib/bundles/bccontrib.jar
+* lib/bundles/bouncycastle.jar
+* lib/bundles/browserlauncher.jar
+* lib/bundles/callhistory.jar
+* lib/bundles/certificate.jar
+* lib/bundles/commons-codec.jar
+* lib/bundles/contactlist.jar
+* lib/bundles/contactsource.jar
+* lib/bundles/credentialsstorage.jar
+* lib/bundles/defaultresources.jar
+* lib/bundles/dnsservice.jar
+* lib/bundles/filehistory.jar
+* lib/bundles/globaldisplaydetails.jar
+* lib/bundles/history.jar
+* lib/bundles/httpclient.jar
+* lib/bundles/httpcore.jar
+* lib/bundles/httputil.jar
+* lib/bundles/libjitsi.jar
+* lib/bundles/metahistory.jar
+* lib/bundles/msghistory.jar
+* lib/bundles/muc.jar
+* lib/bundles/netaddr.jar
+* lib/bundles/notification-service.jar
+* lib/bundles/notification-wiring.jar
+* lib/bundles/otr.jar
+* lib/bundles/plugin-loggingutils.jar
+* lib/bundles/protocol.jar
+* lib/bundles/replacement.jar
+* lib/bundles/resourcemanager.jar
+* lib/bundles/sdes4j.jar
+* lib/bundles/sysactivitynotifications.jar
+* lib/bundles/systray-service.jar
+* lib/bundles/ui-service.jar
+* lib/bundles/updateservice.jar
+* lib/bundles/util.jar
+* lib/bundles/zrtp4j.jar
+* lib/installer-exclude/
+* lib/installer-exclude/asm-4.1.jar
+* lib/installer-exclude/asm-commons-4.1.jar
+* lib/installer-exclude/jarjar.jar
+* lib/java-stubs.jar
+* lib/log4j-1.2.8.jar
+* lib/native/
+* lib/native/armeabi/
+* lib/native/armeabi/libjnawtrenderer.so
+* lib/native/armeabi/libjnffmpeg.so
+* lib/native/armeabi/libjng722.so
+* lib/native/armeabi/libjnopensles.so
+* lib/native/armeabi/libjnopus.so
+* lib/native/armeabi/libjnspeex.so
+* lib/osgi.core.jar
+* lib/smack-sasl.jar
+* proguard-project.txt
+* tests/
+* tests/ant.properties
+* tests/build.xml
+* tests/gen/
+* tests/gen/org/
+* tests/gen/org/jitsi/
+* tests/gen/org/jitsi/tests/
+* tests/gen/org/jitsi/tests/BuildConfig.java
+* tests/gen/org/jitsi/tests/Manifest.java
+* tests/gen/org/jitsi/tests/R.java
+* tests/local.properties
+* tests/proguard-project.txt
+* tests/project.properties
+* tests/tests.iml
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:18.0.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* assets/ => app/src/main/assets/
+* jni/ => app/src/main/jni/
+* libs/armeabi/libjnffmpeg.so => app/src/main/jniLibs/armeabi/libjnffmpeg.so
+* libs/armeabi/libjng722.so => app/src/main/jniLibs/armeabi/libjng722.so
+* libs/armeabi/libjnopensles.so => app/src/main/jniLibs/armeabi/libjnopensles.so
+* libs/armeabi/libjnopus.so => app/src/main/jniLibs/armeabi/libjnopus.so
+* libs/armeabi/libjnspeex.so => app/src/main/jniLibs/armeabi/libjnspeex.so
+* libs/bccontrib.jar => app/libs/bccontrib.jar
+* libs/bouncycastle.jar => app/libs/bouncycastle.jar
+* libs/browserlauncher.jar => app/libs/browserlauncher.jar
+* libs/callhistory.jar => app/libs/callhistory.jar
+* libs/certificate.jar => app/libs/certificate.jar
+* libs/commons-codec.jar => app/libs/commons-codec.jar
+* libs/contactlist.jar => app/libs/contactlist.jar
+* libs/contactsource.jar => app/libs/contactsource.jar
+* libs/credentialsstorage.jar => app/libs/credentialsstorage.jar
+* libs/defaultresources.jar => app/libs/defaultresources.jar
+* libs/dnsservice.jar => app/libs/dnsservice.jar
+* libs/filehistory.jar => app/libs/filehistory.jar
+* libs/globaldisplaydetails.jar => app/libs/globaldisplaydetails.jar
+* libs/history.jar => app/libs/history.jar
+* libs/httpclient.jar => app/libs/httpclient.jar
+* libs/httpcore.jar => app/libs/httpcore.jar
+* libs/httputil.jar => app/libs/httputil.jar
+* libs/java-stubs.jar => app/libs/java-stubs.jar
+* libs/libjitsi.jar => app/libs/libjitsi.jar
+* libs/log4j-1.2.8.jar => app/libs/log4j-1.2.8.jar
+* libs/metahistory.jar => app/libs/metahistory.jar
+* libs/msghistory.jar => app/libs/msghistory.jar
+* libs/muc.jar => app/libs/muc.jar
+* libs/netaddr.jar => app/libs/netaddr.jar
+* libs/notification-service.jar => app/libs/notification-service.jar
+* libs/notification-wiring.jar => app/libs/notification-wiring.jar
+* libs/osgi.core.jar => app/libs/osgi.core.jar
+* libs/otr.jar => app/libs/otr.jar
+* libs/plugin-loggingutils.jar => app/libs/plugin-loggingutils.jar
+* libs/protocol.jar => app/libs/protocol.jar
+* libs/replacement.jar => app/libs/replacement.jar
+* libs/resourcemanager.jar => app/libs/resourcemanager.jar
+* libs/sdes4j.jar => app/libs/sdes4j.jar
+* libs/smack-sasl.jar => app/libs/smack-sasl.jar
+* libs/sysactivitynotifications.jar => app/libs/sysactivitynotifications.jar
+* libs/systray-service.jar => app/libs/systray-service.jar
+* libs/ui-service.jar => app/libs/ui-service.jar
+* libs/updateservice.jar => app/libs/updateservice.jar
+* libs/util.jar => app/libs/util.jar
+* libs/zrtp4j.jar => app/libs/zrtp4j.jar
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+* tests/src/ => app/src/androidTest/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
