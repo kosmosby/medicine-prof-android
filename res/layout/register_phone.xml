@@ -6,7 +6,17 @@
         android:padding="@dimen/screen_padding"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:background="@drawable/loginbackground">
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/registerPhoneText"
+            style="@style/MediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:textColor="@color/grey"
+            android:layout_marginRight="5dip"
+            android:text="Enter your phone number.Use full country code."/>
 
         <EditText
             android:id="@+id/userPhoneField"
@@ -21,7 +31,7 @@
 
         <Button
             android:id="@+id/registerPhoneButton"
-            android:text="@string/service_gui_SIGN_IN"
+            android:text="Verify Phone"
             android:focusable="true"
             android:textColor="#ffffff"
             android:layout_width="wrap_content"
