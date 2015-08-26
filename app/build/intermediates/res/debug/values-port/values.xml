@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/Volumes/sony/android/app/src/main/res/values-port/dimension.xml -->
-    <eat-comment/>
-    <dimen name="account_list_row_height">65dp</dimen>
-</resources>
