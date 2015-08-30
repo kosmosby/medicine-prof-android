@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="left"
-            android:textColor="@color/grey"
+            android:textColor="@color/black"
             android:layout_marginRight="5dip"
             android:text="Enter your phone number.Use full country code."/>
 

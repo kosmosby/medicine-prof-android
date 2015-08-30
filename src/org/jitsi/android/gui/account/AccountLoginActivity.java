@@ -6,7 +6,6 @@
  */
 package org.jitsi.android.gui.account;
 
-import android.app.AlertDialog;
 import android.content.*;
 import android.os.Bundle;
 
@@ -38,6 +37,8 @@ public class AccountLoginActivity
                ServerResponseReceiver.ServerReponseListener
 {
     private String sPhone;
+    private ServerResponseReceiver broadcastReceiver;
+
     /**
      * Called when the activity is starting. Initializes the corresponding
      * call interface.
@@ -56,7 +57,7 @@ public class AccountLoginActivity
         if(savedInstanceState == null)
         {
             PhoneRegistrationFragment phoneRegistration
-                    = PhoneRegistrationFragment.createInstance();
+                    = PhoneRegistrationFragment.getInstance();
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -203,9 +204,6 @@ public class AccountLoginActivity
         showWaitScreen();
         sPhone = phone;
         RegistrationServiceHelper.getInstance(getApplicationContext()).requestRegistrationCode(phone);
-        //Intent myIntent = new Intent(AccountLoginActivity.this, ConfirmationCodeActivity.class);
-        //myIntent.putExtra("PHONE_NUMBER", phone);
-        //AccountLoginActivity.this.startActivity(myIntent);
     }
 
     private void showWaitScreen(){
@@ -222,40 +220,52 @@ public class AccountLoginActivity
     public void onServerResponse(Intent intent) {
         if((intent.getIntExtra(RegistrationServiceHelper.EXTRA_RESULT_CODE, 0)!=200)||
                 !"OK".equals(intent.getStringExtra("status"))){
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    AccountLoginActivity.this);
+            if("request_code".equals(intent.getStringExtra("type"))){
+                PhoneRegistrationFragment phoneRegistration
+                        = PhoneRegistrationFragment.getInstance();
 
-            // set title
-            alertDialogBuilder.setTitle("Error");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(android.R.id.content, phoneRegistration)
+                        .commit();
+                if ("BAD_PHONE".equals(intent.getStringExtra("status")))
+                {
+                    AndroidUtils.showAlertDialog(
+                            this,
+                            "Wrong phone number",
+                            "Please check that you have entered your full phone number including country and operator codes");
+                }else{
+                    AndroidUtils.showAlertDialog(
+                            this,
+                            "Something goes wrong :(",
+                            "Server returned status: "+intent.getIntExtra(RegistrationServiceHelper.EXTRA_RESULT_CODE, 0)+
+                            ". Error message: " + intent.getStringExtra("status"));
+                }
+            }else if("verify_code".equals(intent.getStringExtra("type"))){
+                CodeVerificationFragment fragment
+                        = CodeVerificationFragment.createInstance();
 
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("Server response code: " + intent.getIntExtra(RegistrationServiceHelper.EXTRA_RESULT_CODE, 0)
-                            +" ."+
-                            "Server returned error message: " + intent.getStringExtra("status"))
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            // if this button is clicked, close
-                            // current activity
-                            AccountLoginActivity.this.finish();
-                        }
-                    })
-                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
-                            dialog.cancel();
-                        }
-                    });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(android.R.id.content, fragment)
+                        .commit();
 
 
+                if ("CODE_INCORRECT".equals(intent.getStringExtra("status")))
+                {
+                    AndroidUtils.showAlertDialog(
+                            this,
+                            "Wrong verification code",
+                            "Please check that you have entered the verification code properly.");
+                }else{
+                    AndroidUtils.showAlertDialog(
+                            this,
+                            "Something goes wrong :(",
+                            "Server returned status: "+intent.getIntExtra(RegistrationServiceHelper.EXTRA_RESULT_CODE, 0)+
+                                    ". Error message: " + intent.getStringExtra("status"));
+                }
+
+            }
         }
         else{
             if("request_code".equals(intent.getStringExtra("type"))){
@@ -283,9 +293,16 @@ public class AccountLoginActivity
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(new ServerResponseReceiver(this),
+        broadcastReceiver = new ServerResponseReceiver(this);
+        registerReceiver(broadcastReceiver,
                 new IntentFilter(RegistrationServiceHelper.ACTION_REQUEST_RESULT));
 
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

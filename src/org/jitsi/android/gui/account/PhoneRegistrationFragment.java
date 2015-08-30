@@ -39,6 +39,7 @@ public class PhoneRegistrationFragment
 {
 
     private PhoneRegistrationListener phoneRegistrationListener;
+    private static PhoneRegistrationFragment fragment = null;
 
     /**
      * {@inheritDoc}
@@ -172,11 +173,11 @@ public class PhoneRegistrationFragment
      *
      * @return new instance of parametrized <tt>AccountLoginFragment</tt>.
      */
-    public static PhoneRegistrationFragment createInstance()
+    public static PhoneRegistrationFragment getInstance()
     {
-        PhoneRegistrationFragment fragment = new PhoneRegistrationFragment();
-
-
+        if(fragment==null){
+            fragment = new PhoneRegistrationFragment();
+        }
 
         return fragment;
     }

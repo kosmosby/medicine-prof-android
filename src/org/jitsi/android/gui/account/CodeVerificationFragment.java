@@ -29,6 +29,7 @@ public class CodeVerificationFragment
 {
 
     private CodeVerificationListener codeVerificationListener;
+    private static CodeVerificationFragment fragment = null;
 
     /**
      * {@inheritDoc}
@@ -105,7 +106,9 @@ public class CodeVerificationFragment
      */
     public static CodeVerificationFragment createInstance()
     {
-        CodeVerificationFragment fragment = new CodeVerificationFragment();
+        if(fragment==null){
+            fragment = new CodeVerificationFragment();
+        }
         return fragment;
     }
 
