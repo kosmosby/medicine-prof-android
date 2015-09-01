@@ -12,7 +12,7 @@ import android.graphics.drawable.*;
 import android.os.*;
 import android.widget.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.*;
 
 /**

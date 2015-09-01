@@ -10,7 +10,7 @@ import android.content.*;
 import android.os.*;
 import android.view.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;

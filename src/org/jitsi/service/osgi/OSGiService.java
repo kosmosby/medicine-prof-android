@@ -12,7 +12,7 @@ import android.content.*;
 import android.support.v4.app.*;
 import android.os.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.impl.osgi.*;

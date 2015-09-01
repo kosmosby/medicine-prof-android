@@ -10,7 +10,7 @@ import android.content.*;
 import android.os.*;
 import android.preference.*;
 import net.java.sip.communicator.plugin.loggingutils.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.settings.util.*;
 import org.jitsi.android.gui.util.*;

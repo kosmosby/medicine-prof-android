@@ -6,7 +6,8 @@
  */
 package org.jitsi.android.gui.chat;
 
-import org.jitsi.*;
+import com.medicineprof.R;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 
 import android.app.*;

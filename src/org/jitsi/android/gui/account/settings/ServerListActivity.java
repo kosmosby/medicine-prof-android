@@ -12,9 +12,10 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.jabber.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 import org.osgi.framework.*;
 

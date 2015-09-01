@@ -12,7 +12,7 @@ import android.content.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.account.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.service.configuration.*;
 

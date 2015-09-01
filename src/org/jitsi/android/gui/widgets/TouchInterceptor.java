@@ -13,7 +13,7 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 
 /**
  * Modified version of class of the same name from android source of the music

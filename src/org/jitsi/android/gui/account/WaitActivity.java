@@ -2,7 +2,7 @@ package org.jitsi.android.gui.account;
 
 import android.app.Activity;
 import android.os.Bundle;
-import org.jitsi.R;
+import com.medicineprof.R;
 
 /**
  * Created by neurons on 8/23/15.

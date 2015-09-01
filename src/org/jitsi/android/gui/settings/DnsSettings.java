@@ -10,7 +10,7 @@ package org.jitsi.android.gui.settings;
 import android.os.*;
 import android.preference.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 

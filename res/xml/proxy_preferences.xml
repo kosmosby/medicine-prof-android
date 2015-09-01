@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:custom="http://schemas.android.com/apk/res/org.jitsi">
+                  xmlns:custom="http://schemas.android.com/apk/res/com.medicineprof">
     <org.jitsi.android.gui.settings.widget.ConfigListPreference
         android:title="@string/plugin_globalproxy_PROXY_TYPE"
         android:key="@string/pref_key_conn_proxy_type"

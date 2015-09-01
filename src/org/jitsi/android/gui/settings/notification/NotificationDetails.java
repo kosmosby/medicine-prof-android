@@ -15,7 +15,7 @@ import net.java.sip.communicator.service.notification.*;
 import net.java.sip.communicator.service.notification.event.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.fragment.*;
 import org.jitsi.android.gui.util.*;

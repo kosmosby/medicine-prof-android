@@ -9,6 +9,7 @@ package org.jitsi.android.plugin.otr;
 import android.content.*;
 import android.view.*;
 
+import com.medicineprof.R;
 import net.java.otr4j.*;
 
 import net.java.sip.communicator.plugin.otr.*;
@@ -17,7 +18,7 @@ import net.java.sip.communicator.service.gui.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.chat.*;

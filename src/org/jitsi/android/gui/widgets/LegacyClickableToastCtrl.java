@@ -11,7 +11,7 @@ import android.text.*;
 import android.view.*;
 import android.widget.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 
 /**
  * The controller used for displaying a custom toast that can be clicked.

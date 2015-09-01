@@ -9,7 +9,7 @@ package org.jitsi.android.gui.widgets;
 import android.animation.*;
 import android.view.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 
 /**
  * Animated version of {@link LegacyClickableToastCtrl}

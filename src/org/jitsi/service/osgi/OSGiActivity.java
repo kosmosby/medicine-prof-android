@@ -15,7 +15,7 @@ import android.os.Bundle; // disambiguation
 import android.support.v4.app.*;
 import android.view.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.LauncherActivity;

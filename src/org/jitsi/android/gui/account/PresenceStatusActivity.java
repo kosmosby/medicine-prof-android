@@ -18,7 +18,7 @@ import net.java.sip.communicator.service.protocol.globalstatus.*;
 import net.java.sip.communicator.util.*;
 import net.java.sip.communicator.util.account.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.account.settings.*;
 import org.jitsi.android.gui.util.*;

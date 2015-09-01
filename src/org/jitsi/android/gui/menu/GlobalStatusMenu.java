@@ -2,7 +2,8 @@ package org.jitsi.android.gui.menu;
 
 import java.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.R;
+import com.medicineprof.*;
 import org.jitsi.android.gui.widgets.*;
 
 import android.content.*;

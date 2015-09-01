@@ -11,7 +11,7 @@ import android.os.*;
 import android.support.v4.app.*;
 import android.view.*;
 
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;
 

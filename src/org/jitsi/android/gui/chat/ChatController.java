@@ -13,10 +13,11 @@ import android.view.*;
 import android.view.inputmethod.*;
 import android.widget.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.util.Logger;
 
 /**

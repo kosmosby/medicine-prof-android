@@ -10,7 +10,7 @@ import java.beans.*;
 
 import android.graphics.drawable.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.authorization.*;

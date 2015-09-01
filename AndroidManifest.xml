@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.jitsi"
+      package="com.medicineprof"
       android:versionCode="1"
       android:versionName="0.1.0">
     <application    android:label="@string/app_name"
                     android:logo="@drawable/actionbaricon"
                     android:icon="@drawable/logoblue"
                     android:theme="@style/JitsiTheme"
-                    android:name=".android.JitsiApplication">
-        <activity android:name=".android.gui.LauncherActivity"
+                    android:name="org.jitsi.android.JitsiApplication">
+        <activity android:name="org.jitsi.android.gui.LauncherActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleTask"
                   android:configChanges="keyboardHidden|orientation|screenSize"
@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.ShutdownActivity"
+        <activity android:name="org.jitsi.android.gui.ShutdownActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleTask"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                 >
         </activity>
-        <activity android:name=".android.gui.Jitsi"
+        <activity android:name="org.jitsi.android.gui.Jitsi"
                   android:label="@string/app_name"
                   android:launchMode="singleTask">
             <intent-filter>
@@ -37,48 +37,48 @@
             <meta-data android:name="android.app.searchable"
                    android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".android.gui.account.AccountsListActivity"
+        <activity android:name="org.jitsi.android.gui.account.AccountsListActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.PresenceStatusActivity"
+        <activity android:name="org.jitsi.android.gui.account.PresenceStatusActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.AccountLoginActivity"
+        <activity android:name="org.jitsi.android.gui.account.AccountLoginActivity"
                     android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.ConfirmationCodeActivity"
+        <activity android:name="org.jitsi.android.gui.account.ConfirmationCodeActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.contactlist.AddContactActivity"
+        <activity android:name="org.jitsi.android.gui.contactlist.AddContactActivity"
                   android:label="@string/app_name"/>
         <!-- Dialog Activity -->
-        <activity android:name=".android.gui.DialogActivity"
+        <activity android:name="org.jitsi.android.gui.DialogActivity"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   />
         <!-- Verify Certificate Activity -->
-        <activity android:name=".impl.androidcertdialog.VerifyCertificateActivity"
+        <activity android:name="org.jitsi.impl.androidcertdialog.VerifyCertificateActivity"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   />
         <!-- Authorization requested dialog -->
-        <activity android:name=".android.gui.authorization.AuthorizationRequestedDialog"
+        <activity android:name="org.jitsi.android.gui.authorization.AuthorizationRequestedDialog"
                   android:label="@string/service_gui_AUTHORIZATION_RESPONSE"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                 />
         <!-- Authentication window service Activity -->
-        <activity android:name=".impl.androidauthwindow.AuthWindowActivity"
+        <activity android:name="org.jitsi.impl.androidauthwindow.AuthWindowActivity"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                 />
         <!-- Request authorization dialog -->
-        <activity android:name=".android.gui.authorization.RequestAuthorizationDialog"
+        <activity android:name="org.jitsi.android.gui.authorization.RequestAuthorizationDialog"
                   android:label="@string/service_gui_REQUEST_AUTHORIZATION"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                 />
-        <activity android:name=".android.gui.call.CallContactActivity"
+        <activity android:name="org.jitsi.android.gui.call.CallContactActivity"
                     android:label="@string/app_name"
                     android:icon="@drawable/actionbaricon"
                     android:launchMode="singleTask">
@@ -89,28 +89,28 @@
                 <data android:scheme="tel" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.call.VideoCallActivity"
+        <activity android:name="org.jitsi.android.gui.call.VideoCallActivity"
                   android:label="@string/app_name"
                   android:hardwareAccelerated="true" >
         </activity>
-        <activity android:name=".android.gui.call.ReceivedCallActivity"
+        <activity android:name="org.jitsi.android.gui.call.ReceivedCallActivity"
                     android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.chat.ChatActivity"
+        <activity android:name="org.jitsi.android.gui.chat.ChatActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleTask" >
         </activity>
-        <activity android:name=".android.plugin.otr.OtrAuthenticateDialog"
+        <activity android:name="org.jitsi.android.plugin.otr.OtrAuthenticateDialog"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Holo.Dialog.MinWidth"/>
         <!-- Call control from the status bar notification -->
-        <receiver android:name=".android.gui.call.notification.CallControl" >
+        <receiver android:name="org.jitsi.android.gui.call.notification.CallControl" >
             <intent-filter>
                 <action android:name="org.jitsi.call.control" />
             </intent-filter>
         </receiver>
         <!-- Chat link clicked handler -->
-        <activity android:name=".android.gui.chat.JitsiProtocolReceiver"
+        <activity android:name="org.jitsi.android.gui.chat.JitsiProtocolReceiver"
                   android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -118,146 +118,146 @@
                 <data android:scheme="jitsi" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.settings.SettingsActivity"
+        <activity android:name="org.jitsi.android.gui.settings.SettingsActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.settings.EncodingSettings"
+        <activity android:name="org.jitsi.android.gui.settings.EncodingSettings"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.EncodingSettings" />
+                <action android:name="org.jitsi.android.gui.settings.EncodingSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- MediaCodec list -->
-        <activity android:name=".android.gui.settings.MediaCodecList"
+        <activity android:name="org.jitsi.android.gui.settings.MediaCodecList"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.MediaCodecList" />
+                <action android:name="org.jitsi.android.gui.settings.MediaCodecList" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.settings.ChatSecuritySettings"
+        <activity android:name="org.jitsi.android.gui.settings.ChatSecuritySettings"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.ChatSecuritySettings" />
+                <action android:name="org.jitsi.android.gui.settings.ChatSecuritySettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.settings.OtrPrivatekeys"
+        <activity android:name="org.jitsi.android.gui.settings.OtrPrivatekeys"
                   android:label="@string/service_gui_settings_OTR_PRIV_KEYS_TITLE">
             <intent-filter>
-                <action android:name=".android.gui.settings.OtrPrivatekeys" />
+                <action android:name="org.jitsi.android.gui.settings.OtrPrivatekeys" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.settings.OtrFingerprints"
+        <activity android:name="org.jitsi.android.gui.settings.OtrFingerprints"
                   android:label="@string/service_gui_settings_OTR_FINGERPRINTS_TITLE">
             <intent-filter>
-                <action android:name=".android.gui.settings.OtrFingerprints" />
+                <action android:name="org.jitsi.android.gui.settings.OtrFingerprints" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- Table events settings -->
-        <!--<activity android:name=".android.gui.settings.notification.NotificationsTableSettings"
+        <!--<activity android:name="org.jitsi.android.gui.settings.notification.NotificationsTableSettings"
                   android:label="@string/service_gui_settings_EVENTS_TITLE">
             <intent-filter>
-                <action android:name=".android.gui.settings.NotificationsSettings" />
+                <action android:name="org.jitsi.android.gui.settings.NotificationsSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>-->
-        <activity android:name=".android.gui.settings.notification.NotificationSettings"
+        <activity android:name="org.jitsi.android.gui.settings.notification.NotificationSettings"
                   android:label="@string/service_gui_settings_EVENTS_TITLE">
             <intent-filter>
-                <action android:name=".android.gui.settings.NotificationsSettings" />
+                <action android:name="org.jitsi.android.gui.settings.NotificationsSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.settings.notification.NotificationDetails"
+        <activity android:name="org.jitsi.android.gui.settings.notification.NotificationDetails"
                   >
         </activity>
         <!-- Basic settings -->
-        <activity android:name=".android.gui.settings.BasicSettingsActivity"
+        <activity android:name="org.jitsi.android.gui.settings.BasicSettingsActivity"
                   android:label="@string/app_name">
         </activity>
         <!-- Opus settings -->
-        <activity-alias android:name=".android.gui.settings.OpusSettings"
-                        android:targetActivity=".android.gui.settings.BasicSettingsActivity" >
+        <activity-alias android:name="org.jitsi.android.gui.settings.OpusSettings"
+                        android:targetActivity="org.jitsi.android.gui.settings.BasicSettingsActivity" >
             <intent-filter>
-                <action android:name=".android.gui.settings.OpusSettings" />
+                <action android:name="org.jitsi.android.gui.settings.OpusSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="android.preference"
                        android:resource="@xml/opus_preferences" />
         </activity-alias>
         <!-- Silk settings -->
-        <activity-alias android:name=".android.gui.settings.SilkSettings"
-                        android:targetActivity=".android.gui.settings.BasicSettingsActivity" >
+        <activity-alias android:name="org.jitsi.android.gui.settings.SilkSettings"
+                        android:targetActivity="org.jitsi.android.gui.settings.BasicSettingsActivity" >
             <intent-filter>
-                <action android:name=".android.gui.settings.SilkSettings" />
+                <action android:name="org.jitsi.android.gui.settings.SilkSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="android.preference"
                        android:resource="@xml/silk_preferences" />
         </activity-alias>
         <!-- Sip settings -->
-        <activity android:name=".android.gui.settings.SipSettings"
+        <activity android:name="org.jitsi.android.gui.settings.SipSettings"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.SipSettings" />
+                <action android:name="org.jitsi.android.gui.settings.SipSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- Proxy settings -->
-        <activity-alias android:name=".android.gui.settings.ProxySettings"
-                        android:targetActivity=".android.gui.settings.BasicSettingsActivity" >
+        <activity-alias android:name="org.jitsi.android.gui.settings.ProxySettings"
+                        android:targetActivity="org.jitsi.android.gui.settings.BasicSettingsActivity" >
             <intent-filter>
-                <action android:name=".android.gui.settings.ProxySettings" />
+                <action android:name="org.jitsi.android.gui.settings.ProxySettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="android.preference"
                        android:resource="@xml/proxy_preferences" />
         </activity-alias>
         <!-- Dns settings -->
-        <activity android:name=".android.gui.settings.DnsSettings"
+        <activity android:name="org.jitsi.android.gui.settings.DnsSettings"
                   android:label="@string/service_gui_settings_DNS">
             <intent-filter>
-                <action android:name=".android.gui.settings.DnsSettings" />
+                <action android:name="org.jitsi.android.gui.settings.DnsSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data android:name="android.preference"
                        android:resource="@xml/dns_preferences" />
         </activity>
         <!-- Logging settings -->
-        <activity android:name=".android.gui.settings.LoggingSettings"
+        <activity android:name="org.jitsi.android.gui.settings.LoggingSettings"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.LoggingSettings" />
+                <action android:name="org.jitsi.android.gui.settings.LoggingSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- Provisioning settings -->
-        <activity android:name=".android.gui.settings.ProvisioningSettings"
+        <activity android:name="org.jitsi.android.gui.settings.ProvisioningSettings"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name=".android.gui.settings.ProvisioningSettings" />
+                <action android:name="org.jitsi.android.gui.settings.ProvisioningSettings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.gui.account.settings.AccountPreferencesActivity"
+        <activity android:name="org.jitsi.android.gui.account.settings.AccountPreferencesActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.settings.EncodingActivity"
+        <activity android:name="org.jitsi.android.gui.account.settings.EncodingActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.settings.SecurityActivity"
+        <activity android:name="org.jitsi.android.gui.account.settings.SecurityActivity"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".android.gui.account.settings.ServerListActivity"
+        <activity android:name="org.jitsi.android.gui.account.settings.ServerListActivity"
                   android:label="@string/app_name">
         </activity>
-      <activity android:name=".android.gui.account.WaitActivity"/>
+      <activity android:name="org.jitsi.android.gui.account.WaitActivity"/>
 
-      <!--<activity android:name=".android.gui.account.AccountPreferencesActivity"
+      <!--<activity android:name="org.jitsi.android.gui.account.AccountPreferencesActivity"
           android:configChanges="orientation|keyboardHidden">
           <intent-filter>
               <action android:name="android.intent.action.VIEW" />
@@ -268,8 +268,8 @@
              <category android:name="android.intent.category.DEFAULT" />
           </intent-filter>
       </activity>-->
-        <service android:name=".service.osgi.OSGiService" />
-        <service android:name=".android.gui.account.AccountAuthenticatorService"
+        <service android:name="org.jitsi.service.osgi.OSGiService" />
+        <service android:name="org.jitsi.android.gui.account.AccountAuthenticatorService"
               android:exported="true" android:process=":auth">
           <intent-filter>
               <action android:name="android.accounts.AccountAuthenticator" />
@@ -293,5 +293,6 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="18"/>
 </manifest>

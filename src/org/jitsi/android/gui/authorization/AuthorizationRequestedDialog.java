@@ -14,7 +14,7 @@ import android.widget.*;
 import net.java.sip.communicator.service.contactlist.*;
 import net.java.sip.communicator.service.protocol.*;
 
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.contactlist.*;
 import org.jitsi.android.gui.util.*;

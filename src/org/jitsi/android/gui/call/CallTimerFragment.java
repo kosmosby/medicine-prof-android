@@ -9,7 +9,7 @@ package org.jitsi.android.gui.call;
 import android.widget.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 
 import java.util.*;

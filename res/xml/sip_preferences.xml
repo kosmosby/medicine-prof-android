@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:custom="http://schemas.android.com/apk/res/org.jitsi">
+                  xmlns:custom="http://schemas.android.com/apk/res/com.medicineprof">
     <PreferenceCategory
             android:title="@string/service_gui_SIP_CONN_GENERAL"
             android:key="@string/pref_cat_sip_conn_general">

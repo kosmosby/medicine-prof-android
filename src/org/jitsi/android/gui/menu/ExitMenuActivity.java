@@ -9,7 +9,7 @@ package org.jitsi.android.gui.menu;
 import android.os.*;
 import android.view.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.service.osgi.*;
 

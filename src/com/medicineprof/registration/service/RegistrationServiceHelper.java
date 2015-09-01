@@ -24,6 +24,7 @@ public class RegistrationServiceHelper {
 	private static final String REQUEST_ID = "REQUEST_ID";
 	private static final String registrationCodeHashkey = "REGISTRATION_CODE";
     private static final String verifyCodeHashkey = "VERIFY_CODE";
+    private static final String requestContactsHashkey = "REQUEST_CONTACTS";
 
 	private static Object lock = new Object();
 
@@ -108,6 +109,40 @@ public class RegistrationServiceHelper {
         return requestId;
     }
 
+    public long requestContacts(String phoneNumber, String code, String[] phones, String[] names){
+
+        if(pendingRequests.containsKey(requestContactsHashkey)){
+            return pendingRequests.get(requestContactsHashkey);
+        }
+
+        long requestId = generateRequestID();
+        pendingRequests.put(requestContactsHashkey, requestId);
+
+        ResultReceiver serviceCallback = new ResultReceiver(null){
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                handleRequestContactsResponse(resultCode, resultData);
+            }
+
+        };
+
+        Intent intent = new Intent(this.ctx, RegistrationService.class);
+        intent.putExtra(RegistrationService.PHONE_NUMBER_EXTRA, phoneNumber);
+        intent.putExtra(RegistrationService.REGISTRATION_CODE_EXTRA, code);
+        intent.putExtra(RegistrationService.CONTACT_PHONES_EXTRA, phones);
+        intent.putExtra(RegistrationService.CONTACT_NAMES_EXTRA, names);
+
+        intent.putExtra(RegistrationService.RESOURCE_TYPE_EXTRA,
+                RegistrationService.RESOURCE_TYPE_REQUEST_CONTACTS);
+        intent.putExtra(RegistrationService.SERVICE_CALLBACK, serviceCallback);
+        intent.putExtra(REQUEST_ID, requestId);
+
+        this.ctx.startService(intent);
+
+        return requestId;
+    }
+
 	private long generateRequestID() {
 		long requestId = UUID.randomUUID().getLeastSignificantBits();
 		return requestId;
@@ -145,7 +180,7 @@ public class RegistrationServiceHelper {
         if(origIntent != null){
             long requestId = origIntent.getLongExtra(REQUEST_ID, 0);
 
-            pendingRequests.remove(registrationCodeHashkey);
+            pendingRequests.remove(verifyCodeHashkey);
 
             Intent resultBroadcast = new Intent(ACTION_REQUEST_RESULT);
             resultBroadcast.putExtra(EXTRA_REQUEST_ID, requestId);
@@ -154,6 +189,28 @@ public class RegistrationServiceHelper {
             resultBroadcast.putExtra("status", resultData.getString("status"));
             resultBroadcast.putExtra("user", resultData.getString("user"));
             resultBroadcast.putExtra("password", resultData.getString("password"));
+            ctx.sendBroadcast(resultBroadcast);
+
+        }
+    }
+
+    private void handleRequestContactsResponse(int resultCode, Bundle resultData){
+
+
+        Intent origIntent = (Intent)resultData.getParcelable(RegistrationService.ORIGINAL_INTENT_EXTRA);
+
+        if(origIntent != null){
+            long requestId = origIntent.getLongExtra(REQUEST_ID, 0);
+
+            pendingRequests.remove(requestContactsHashkey);
+
+            Intent resultBroadcast = new Intent(ACTION_REQUEST_RESULT);
+            resultBroadcast.putExtra(EXTRA_REQUEST_ID, requestId);
+            resultBroadcast.putExtra(EXTRA_RESULT_CODE, resultCode);
+            resultBroadcast.putExtra("type", "request_contacts");
+            resultBroadcast.putExtra("status", resultData.getString("status"));
+            resultBroadcast.putExtra("phones", resultData.getStringArray("phones"));
+            resultBroadcast.putExtra("names", resultData.getStringArray("contacts"));
             ctx.sendBroadcast(resultBroadcast);
 
         }

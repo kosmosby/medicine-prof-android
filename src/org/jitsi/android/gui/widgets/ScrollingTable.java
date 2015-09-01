@@ -10,7 +10,8 @@ import android.content.*;
 import android.util.*;
 import android.view.*;
 import android.widget.*;
-import org.jitsi.*;
+import com.medicineprof.R;
+import com.medicineprof.*;
 
 /**
  * Custom layout that handles fixes table header, by measuring maximum column

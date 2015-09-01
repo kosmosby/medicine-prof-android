@@ -6,9 +6,10 @@
  */
 package org.jitsi.android.gui.contactlist.model;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.contactlist.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.contactlist.*;
 import org.jitsi.android.gui.util.*;

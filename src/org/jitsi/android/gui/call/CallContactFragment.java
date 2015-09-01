@@ -9,12 +9,13 @@ package org.jitsi.android.gui.call;
 import java.util.*;
 
 import android.os.Bundle;
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 import net.java.sip.communicator.util.account.*;
 import net.java.sip.communicator.util.call.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;
 import org.osgi.framework.*;

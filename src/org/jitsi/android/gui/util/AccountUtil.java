@@ -9,8 +9,9 @@ package org.jitsi.android.gui.util;
 import android.content.*;
 import android.graphics.*;
 import android.graphics.drawable.*;
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 
 /**
  * Class containing utility methods that may concern accounts.

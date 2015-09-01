@@ -13,7 +13,7 @@ import android.view.*;
 
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.util.java.awt.*;
 import org.jitsi.impl.neomedia.codec.video.*;

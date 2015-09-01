@@ -14,10 +14,11 @@ import android.hardware.*;
 import android.media.*;
 import android.os.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.LauncherActivity;
 import org.jitsi.android.gui.account.*;

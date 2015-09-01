@@ -11,9 +11,9 @@ import android.content.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
 import org.jitsi.android.gui.widgets.*;
 
 import java.io.*;

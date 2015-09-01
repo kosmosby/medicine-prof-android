@@ -11,7 +11,7 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.impl.neomedia.codec.video.*;
 import org.jitsi.service.osgi.*;
 

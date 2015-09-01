@@ -9,7 +9,7 @@ package org.jitsi.android.gui.call;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.impl.neomedia.*;
 import org.jitsi.service.neomedia.*;
 import org.jitsi.service.neomedia.event.*;

@@ -10,11 +10,12 @@ import android.content.*;
 import android.os.Bundle;
 
 import android.preference.*;
+import com.medicineprof.R;
 import net.java.otr4j.*;
 import net.java.sip.communicator.plugin.otr.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;
@@ -36,10 +37,10 @@ public class ChatSecuritySettings
     // Preference keys
     static private final String P_KEY_OTR_ENABLE
             = JitsiApplication.getResString(
-                    org.jitsi.R.string.pref_key_otr_enable);
+                    R.string.pref_key_otr_enable);
     static private final String P_KEY_OTR_AUTO
             = JitsiApplication.getResString(
-                    org.jitsi.R.string.pref_key_otr_auto);
+                    R.string.pref_key_otr_auto);
     static private final String P_KEY_OTR_REQUIRE
             = JitsiApplication.getResString(
                     R.string.pref_key_otr_require);
@@ -76,7 +77,7 @@ public class ChatSecuritySettings
         {
             super.onCreate(savedInstanceState);
 
-            addPreferencesFromResource(org.jitsi.R.xml.security_preferences);
+            addPreferencesFromResource(R.xml.security_preferences);
         }
 
         /**

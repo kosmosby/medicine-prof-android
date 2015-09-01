@@ -21,7 +21,7 @@ import android.view.Menu; // Disambiguation
 import android.view.MenuItem; // Disambiguation
 import android.widget.*;
 
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.call.notification.*;
 import org.jitsi.android.gui.controller.*;

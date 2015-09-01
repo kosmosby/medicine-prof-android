@@ -12,7 +12,7 @@ import android.os.Bundle; // disambiguation
 
 import net.java.sip.communicator.util.Logger;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.chat.*;
 import org.jitsi.android.gui.contactlist.*;
 import org.jitsi.android.gui.fragment.*;

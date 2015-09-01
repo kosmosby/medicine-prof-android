@@ -8,9 +8,10 @@ package org.jitsi.android.gui.account;
 
 import java.util.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;
 

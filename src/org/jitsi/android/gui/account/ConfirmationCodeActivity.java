@@ -13,7 +13,7 @@ import net.java.sip.communicator.service.gui.AccountRegistrationWizard;
 import net.java.sip.communicator.service.protocol.OperationFailedException;
 import net.java.sip.communicator.service.protocol.ProtocolProviderService;
 import net.java.sip.communicator.util.Logger;
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.gui.Jitsi;
 import org.jitsi.android.gui.menu.ExitMenuActivity;
 import org.jitsi.android.gui.util.AndroidUtils;

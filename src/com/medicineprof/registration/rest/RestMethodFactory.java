@@ -36,6 +36,10 @@ public class RestMethodFactory {
     public RestMethod getVerifyCodeRestMethod(String phone, String code) {
         return new VerifyCodeRestMethod(mContext, phone, code);
     }
+    public RestMethod getObtainContactsRestMethod(String phone,String code,
+                                                  String[] phones, String[] names){
+        return new ObtainContactsRestMethod(mContext, phone, code, phones, names);
+    }
 	public enum Method {
 		GET, POST, PUT, DELETE
 	}

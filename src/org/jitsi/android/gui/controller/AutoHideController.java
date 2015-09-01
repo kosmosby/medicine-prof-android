@@ -13,7 +13,7 @@ import android.view.animation.*;
 
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 
 import java.util.*;

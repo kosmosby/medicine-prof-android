@@ -12,7 +12,7 @@ import android.media.*;
 import android.os.*;
 import android.widget.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.impl.neomedia.*;
 import org.jitsi.service.neomedia.*;

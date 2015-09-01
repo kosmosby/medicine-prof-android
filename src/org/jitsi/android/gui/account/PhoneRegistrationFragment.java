@@ -14,14 +14,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import net.java.sip.communicator.service.protocol.ProtocolProviderFactory;
 import net.java.sip.communicator.service.protocol.ProtocolProviderService;
-import org.jitsi.R;
-import org.jitsi.android.gui.util.ViewUtil;
+import com.medicineprof.R;
 import org.jitsi.service.osgi.OSGiFragment;
 
 import java.util.Map;

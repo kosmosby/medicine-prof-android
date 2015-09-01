@@ -8,12 +8,13 @@ package org.jitsi.android.gui.account.settings;
 
 import android.content.*;
 import android.preference.*;
+import com.medicineprof.R;
 import net.java.sip.communicator.plugin.sipaccregwizz.*;
 import net.java.sip.communicator.service.certificate.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.service.protocol.sip.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.settings.util.*;
 

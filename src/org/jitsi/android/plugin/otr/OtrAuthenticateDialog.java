@@ -13,7 +13,7 @@ import android.view.*;
 import net.java.sip.communicator.plugin.otr.*;
 import net.java.sip.communicator.service.protocol.*;
 
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.util.*;
 import org.jitsi.service.osgi.*;

@@ -9,7 +9,7 @@ package org.jitsi.android.gui.settings;
 import android.os.*;
 import android.preference.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 
 import java.util.*;
 

@@ -8,10 +8,11 @@ package org.jitsi.android.gui.call.notification;
 
 import android.app.*;
 import android.content.*;
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 import net.java.sip.communicator.util.call.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 
 import java.util.*;
 

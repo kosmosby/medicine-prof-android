@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:custom="http://schemas.android.com/apk/res/org.jitsi">
+                  xmlns:custom="http://schemas.android.com/apk/res/com.medicineprof">
     <PreferenceCategory
         android:title="@string/plugin_provisioning_METHOD"
         android:key="@string/pref_cat_provisioning_METHOD"

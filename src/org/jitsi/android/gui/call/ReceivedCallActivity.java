@@ -8,7 +8,7 @@ package org.jitsi.android.gui.call;
 
 import net.java.sip.communicator.service.protocol.event.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 
 import android.content.*;

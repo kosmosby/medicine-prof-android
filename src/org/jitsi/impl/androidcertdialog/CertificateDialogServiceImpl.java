@@ -9,7 +9,7 @@ package org.jitsi.impl.androidcertdialog;
 import net.java.sip.communicator.service.certificate.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 
 import java.security.cert.*;

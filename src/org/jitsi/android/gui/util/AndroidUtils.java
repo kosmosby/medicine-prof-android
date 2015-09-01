@@ -9,9 +9,10 @@ package org.jitsi.android.gui.util;
 import java.util.*;
 
 import android.content.res.*;
+import com.medicineprof.R;
 import net.java.sip.communicator.util.Logger;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 
 import android.app.*;
 import android.content.*;

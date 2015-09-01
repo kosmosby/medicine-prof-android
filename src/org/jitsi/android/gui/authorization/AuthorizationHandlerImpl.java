@@ -8,9 +8,10 @@ package org.jitsi.android.gui.authorization;
 
 import android.content.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.protocol.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.util.*;

@@ -12,7 +12,7 @@ import android.text.*;
 import android.view.*;
 import android.widget.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.service.osgi.*;
 
 import javax.security.auth.x500.*;

@@ -11,9 +11,10 @@ import android.content.*;
 import android.os.*;
 import android.preference.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.credentialsstorage.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.service.configuration.*;

@@ -11,7 +11,7 @@ import android.content.res.*;
 import android.preference.*;
 import android.text.*;
 import android.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 
 /**

@@ -12,7 +12,7 @@ import android.view.*;
 import android.widget.*;
 import net.java.sip.communicator.service.contactlist.*;
 import net.java.sip.communicator.util.*;
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.chat.*;
 import org.jitsi.android.gui.util.*;

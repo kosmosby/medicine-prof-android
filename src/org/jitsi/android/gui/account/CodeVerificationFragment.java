@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import org.jitsi.R;
+import com.medicineprof.R;
 import org.jitsi.service.osgi.OSGiFragment;
 
 /**

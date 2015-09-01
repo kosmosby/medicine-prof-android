@@ -11,11 +11,12 @@ import android.support.v4.app.*;
 
 import java.util.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.systray.*;
 import net.java.sip.communicator.service.systray.event.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.chat.*;
 import org.jitsi.android.gui.util.*;

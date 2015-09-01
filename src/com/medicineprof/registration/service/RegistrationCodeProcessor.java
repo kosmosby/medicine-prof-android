@@ -4,6 +4,7 @@ import com.medicineprof.registration.provider.ProfileConstants;
 import com.medicineprof.registration.rest.RestMethod;
 import com.medicineprof.registration.rest.RestMethodFactory;
 import com.medicineprof.registration.rest.RestMethodResult;
+import com.medicineprof.registration.rest.resource.ContactsRequestStatus;
 import com.medicineprof.registration.rest.resource.RegistrationCodeRequestStatus;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -83,6 +84,36 @@ class RegistrationCodeProcessor {
                 result.getResource()!=null?result.getResource().getUser():null,
                 result.getResource()!=null?result.getResource().getPassword():null);
 
+    }
+
+    void obtainContacts(String phone, String code, String[] phones, String[] names, RequestContactsCallback callback){
+        // (4) Insert-Update the ContentProvider with a status column and
+        // results column
+        // Look at ContentProvider example, and build a content provider
+        // that tracks the necessary data.
+
+        // (5) Call the REST method
+        // Create a RESTMethod class that knows how to assemble the URL,
+        // and performs the HTTP operation.
+
+        @SuppressWarnings("unchecked")
+        RestMethod<ContactsRequestStatus> verifyRegistrationCodeMethod =
+                RestMethodFactory.getInstance(mContext).getObtainContactsRestMethod(phone, code, phones,names);
+        RestMethodResult<ContactsRequestStatus> result = verifyRegistrationCodeMethod.execute();
+
+		/*
+		 * (8) Insert-Update the ContentProvider status, and insert the result
+		 * on success Parsing the JSON response (on success) and inserting into
+		 * the content provider
+		 */
+
+        //updateContentProvider(result);
+
+        // (9) Operation complete callback to Service
+
+        callback.send(result.getStatusCode(), result.getResource()!=null?result.getResource().getStatus():null,
+                result.getResource()!=null?result.getResource().getContactPhones():null,
+                result.getResource()!=null?result.getResource().getContactNames():null);
     }
 
 	private void updateContentProvider(RestMethodResult<RegistrationCodeRequestStatus> result) {

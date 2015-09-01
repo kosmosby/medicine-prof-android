@@ -12,10 +12,11 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.medicineprof.R;
 import net.java.sip.communicator.service.contactlist.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.util.*;

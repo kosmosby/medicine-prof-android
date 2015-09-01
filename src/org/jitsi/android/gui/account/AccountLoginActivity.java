@@ -7,20 +7,28 @@
 package org.jitsi.android.gui.account;
 
 import android.content.*;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
+import com.medicineprof.R;
 import com.medicineprof.registration.service.RegistrationServiceHelper;
 import com.medicineprof.registration.service.ServerResponseReceiver;
 import net.java.sip.communicator.service.gui.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
-import org.jitsi.*;
+import com.medicineprof.*;
 import org.jitsi.android.gui.*;
 import org.jitsi.android.gui.menu.*;
 import org.jitsi.android.gui.util.*;
 
 import org.osgi.framework.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The <tt>AccountLoginActivity</tt> is the activity responsible for creating
@@ -204,6 +212,7 @@ public class AccountLoginActivity
         showWaitScreen();
         sPhone = phone;
         RegistrationServiceHelper.getInstance(getApplicationContext()).requestRegistrationCode(phone);
+        //requestContacts(phone);
     }
 
     private void showWaitScreen(){
@@ -309,5 +318,95 @@ public class AccountLoginActivity
     public void onCodeEntered(String code) {
         showWaitScreen();
         RegistrationServiceHelper.getInstance(getApplicationContext()).verifyRegistrationCode(sPhone, code);
+    }
+
+    private void requestContacts(String phone){
+        List<Person> contacts = getContactList();
+        String[] phones = new String[contacts.size()];
+        String[] names = new String[contacts.size()];
+        int i = 0;
+        for(Person person:contacts){
+            phones[i] = person.getPhoneNum();
+            names[i] = person.getName();
+            i++;
+        }
+        RegistrationServiceHelper.getInstance(getApplicationContext()).requestContacts(phone, "", phones, names);
+    }
+
+    private List<Person> getContactList(){
+        ArrayList<Person> contactList = new ArrayList<Person>();
+
+        Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
+        String[] PROJECTION = new String[] {
+                ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER,
+        };
+        String SELECTION = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
+        Cursor contacts = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, PROJECTION, SELECTION, null, null);
+
+
+        if (contacts.getCount() > 0)
+        {
+            while(contacts.moveToNext()) {
+                Person aContact = new Person();
+                int idFieldColumnIndex = 0;
+                int nameFieldColumnIndex = 0;
+                int numberFieldColumnIndex = 0;
+
+                String contactId = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID));
+
+                nameFieldColumnIndex = contacts.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+                if (nameFieldColumnIndex > -1)
+                {
+                    aContact.setName(contacts.getString(nameFieldColumnIndex));
+                }
+
+                PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
+                final Cursor phone = managedQuery(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
+                if(phone.moveToFirst()) {
+                    while(!phone.isAfterLast())
+                    {
+                        numberFieldColumnIndex = phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                        if (numberFieldColumnIndex > -1)
+                        {
+                            aContact.setPhoneNum(phone.getString(numberFieldColumnIndex));
+                            phone.moveToNext();
+                            TelephonyManager mTelephonyMgr;
+                            mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                            if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhoneNum()))
+                            {
+                                contactList.add(aContact);
+                            }
+                        }
+                    }
+                }
+                phone.close();
+            }
+
+            contacts.close();
+        }
+
+        return contactList;
+    }
+    private class Person {
+        String myName = "";
+        String myNumber = "";
+
+        public String getName() {
+            return myName;
+        }
+
+        public void setName(String name) {
+            myName = name;
+        }
+
+        public String getPhoneNum() {
+            return myNumber;
+        }
+
+        public void setPhoneNum(String number) {
+            myNumber = number;
+        }
     }
 }
