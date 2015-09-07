@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.medicineprof.R;
 import org.jitsi.service.osgi.OSGiFragment;
+import org.osgi.framework.BundleContext;
 
 /**
  * The <tt>AccountLoginFragment</tt> is used for creating new account, but can

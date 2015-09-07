@@ -18,8 +18,8 @@ public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequest
     private String[] contactNames;
 
 	private static final URI PROFILE_URI = URI
-			//.create("http://medicine-prof.com/index.php");
-            .create("http://192.168.100.5/index.php");
+			.create("http://medicine-prof.com/index.php");
+            //.create("http://192.168.100.5/index.php");
 
 	public ObtainContactsRestMethod(Context context, String phone, String password,
                                     String[] contactPhones, String[] contactNames) {

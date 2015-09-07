@@ -20,8 +20,9 @@ import net.java.sip.communicator.service.gui.*;
 import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
-import com.medicineprof.*;
 import org.jitsi.android.gui.*;
+import org.jitsi.android.gui.contactlist.ContactListUtils;
+import org.jitsi.android.gui.contactlist.ListExistingContactsFragment;
 import org.jitsi.android.gui.menu.*;
 import org.jitsi.android.gui.util.*;
 
@@ -39,12 +40,17 @@ import java.util.List;
  */
 public class AccountLoginActivity
     extends ExitMenuActivity
-    implements AccountLoginFragment.AccountLoginListener,
+    implements
                PhoneRegistrationFragment.PhoneRegistrationListener,
                CodeVerificationFragment.CodeVerificationListener,
-               ServerResponseReceiver.ServerReponseListener
+               ServerResponseReceiver.ServerReponseListener,
+               ListExistingContactsFragment.ContactsHandler
 {
     private String sPhone;
+    private String login;
+    private String password;
+    private boolean loginReady = false;
+
     private ServerResponseReceiver broadcastReceiver;
 
     /**
@@ -73,6 +79,7 @@ public class AccountLoginActivity
                     .commit();
         }
     }
+
 
     /**
      * Sign in the account with the given <tt>userName</tt>, <tt>password</tt>
@@ -191,14 +198,43 @@ public class AccountLoginActivity
      *
      */
     @Override
-    public void onLoginPerformed(String login, String password, String network)
+    public void onLoginPerformed(final String login, final String password, final List<String> contacts)
     {
-        ProtocolProviderService protocolProvider
+        String network="Jabber";
+        final ProtocolProviderService protocolProvider
                 = signIn(login, password, network);
+
 
         if (protocolProvider != null)
         {
-            //addAndroidAccount(protocolProvider);
+            new Thread(){
+                @Override
+                public void run() {
+                    //addAndroidAccount(protocolProvider);
+                    while(!protocolProvider.getRegistrationState().equals(RegistrationState.REGISTERED)){
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                        if(contacts!=null){
+                            for(String contactId:contacts){
+                                if(contactId.startsWith("+")){
+                                    contactId = contactId.substring(1);
+                                }
+                                ContactListUtils
+                                        .addContact(protocolProvider,
+                                                AndroidGUIActivator.getContactListService().getRoot(),
+                                                contactId);
+                            }
+                        }
+
+
+                }
+            }.start();
+
+
 
             Intent showContactsIntent = new Intent(Jitsi.ACTION_SHOW_CONTACTS);
             startActivity(showContactsIntent);
@@ -293,10 +329,36 @@ public class AccountLoginActivity
                 ed.putString("medicineprof_user", user);
                 ed.putString("medicineprof_password", password);
                 ed.commit();
-                onLoginPerformed(user, password, "Jabber");
+                this.login = user;
+                this.password = password;
+                loginReady=true;
+                requestContacts(sPhone);
+            }else if("request_contacts".equals(intent.getStringExtra("type"))){
+                String[] phones = intent.getStringArrayExtra("phones");
+                String[] contacts = intent.getStringArrayExtra("names");
+                //showExistingContactsActivity(this.login, phones, contacts);
+
+                ListExistingContactsFragment fragment
+                        = ListExistingContactsFragment.createInstance(this.login, this.password, phones, contacts);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(android.R.id.content, fragment)
+                        .commit();
             }
 
         }
+    }
+
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -389,6 +451,15 @@ public class AccountLoginActivity
 
         return contactList;
     }
+
+    private void showExistingContactsActivity(String accountId, String[] phones, String[] contacts){
+        Intent i=new Intent(getApplicationContext(),ListExistingContactsFragment.class);
+        i.putExtra("phones", phones);
+        i.putExtra("contacts", contacts);
+        i.putExtra("accountId", accountId);
+        startActivity(i);
+    }
+
     private class Person {
         String myName = "";
         String myNumber = "";

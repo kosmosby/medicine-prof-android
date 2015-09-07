@@ -1,9 +1,12 @@
 package org.jitsi.android.gui.contactlist;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,61 +22,73 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import com.medicineprof.R;
+import net.java.sip.communicator.service.contactlist.MetaContactGroup;
+import net.java.sip.communicator.service.protocol.AccountID;
+import net.java.sip.communicator.service.protocol.ProtocolProviderService;
+import net.java.sip.communicator.util.account.AccountUtils;
+import org.jitsi.android.gui.AndroidGUIActivator;
+import org.jitsi.android.gui.util.AccountUtil;
+import org.jitsi.service.osgi.OSGiFragment;
 
-public class ListExistingContactsActivity extends Activity {
+public class ListExistingContactsFragment extends OSGiFragment {
 
     MyCustomAdapter dataAdapter = null;
+    String[] phones;
+    String[] contacts;
+    String user;
+    String password;
+
+    ContactsHandler contactsHandler;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof ContactsHandler){
+            contactsHandler = (ContactsHandler)activity;
+        }
+    }
+
+    public static ListExistingContactsFragment createInstance(String user, String password, String[] phones, String[] contacts)
+    {
+        ListExistingContactsFragment fragment = new ListExistingContactsFragment();
+        fragment.phones = phones;
+        fragment.contacts = contacts;
+        fragment.user = user;
+        fragment.password = password;
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.existing_phone_contacts);
+        View content =
+                inflater.inflate(R.layout.existing_phone_contacts, container, false);
 
         //Generate list View from ArrayList
-        displayListView();
+        displayListView(content);
 
-        checkButtonClick();
+        checkButtonClick(content);
+        return content;
 
     }
 
-    private void displayListView() {
-
-        //Array list of countries
+    private void displayListView(View content) {
         ArrayList<Country> countryList = new ArrayList<Country>();
-        Country country = new Country("AFG","Afghanistan",false);
-        countryList.add(country);
-        country = new Country("ALB","Albania",true);
-        countryList.add(country);
-        country = new Country("DZA","Algeria",false);
-        countryList.add(country);
-        country = new Country("ASM","American Samoa",true);
-        countryList.add(country);
-        country = new Country("AND","Andorra",true);
-        countryList.add(country);
-        country = new Country("AGO","Angola",false);
-        countryList.add(country);
-        country = new Country("AIA","Anguilla",false);
-        countryList.add(country);
 
+        if(phones!=null && contacts!=null){
+
+            for(int i = 0 ; i < phones.length ; i++){
+                Country country = new Country(phones[i],contacts[i],false);
+                countryList.add(country);
+            }
+        }
         //create an ArrayAdaptar from the String Array
-        dataAdapter = new MyCustomAdapter(this,
+        dataAdapter = new MyCustomAdapter(getActivity(),
                 R.layout.existing_phone_contacts_info, countryList);
-        ListView listView = (ListView) findViewById(R.id.listView1);
+        ListView listView = (ListView) content.findViewById(R.id.listView1);
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
-
-
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // When clicked, show a toast with the TextView text
-                Country country = (Country) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Clicked on Row: " + country.getName(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 
     private class MyCustomAdapter extends ArrayAdapter<Country> {
@@ -99,9 +114,9 @@ public class ListExistingContactsActivity extends Activity {
             Log.v("ConvertView", String.valueOf(position));
 
             if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater)getSystemService(
+                LayoutInflater vi = (LayoutInflater)getActivity().getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.existing_phone_contacts, null);
+                convertView = vi.inflate(R.layout.existing_phone_contacts_info, null);
 
                 holder = new ViewHolder();
                 holder.code = (TextView) convertView.findViewById(R.id.code);
@@ -112,10 +127,6 @@ public class ListExistingContactsActivity extends Activity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v ;
                         Country country = (Country) cb.getTag();
-                        Toast.makeText(getApplicationContext(),
-                                "Clicked on Checkbox: " + cb.getText() +
-                                        " is " + cb.isChecked(),
-                                Toast.LENGTH_LONG).show();
                         country.setSelected(cb.isChecked());
                     }
                 });
@@ -136,29 +147,40 @@ public class ListExistingContactsActivity extends Activity {
 
     }
 
-    private void checkButtonClick() {
+    private void checkButtonClick(View content) {
 
 
-        Button myButton = (Button) findViewById(R.id.addSelectedContacts);
+        Button myButton = (Button) content.findViewById(R.id.addSelectedContacts);
         myButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                StringBuffer responseText = new StringBuffer();
-                responseText.append("The following were selected...\n");
-
+//TODO: pass contact ID here.
+                /*String accountIdStr = getIntent().getStringExtra("accountId");
+                AccountID accountId = AccountUtils.getAccountForID(accountIdStr);
+                ProtocolProviderService pps = AccountUtils.getRegisteredProviderForAccount(accountId);
                 ArrayList<Country> countryList = dataAdapter.countryList;
                 for(int i=0;i<countryList.size();i++){
                     Country country = countryList.get(i);
                     if(country.isSelected()){
-                        responseText.append("\n" + country.getName());
+                        //Add contacts here
+                        ContactListUtils
+                                .addContact( pps,
+                                        AndroidGUIActivator.getContactListService().getRoot(),
+                                        country.getCode());
                     }
                 }
 
-                Toast.makeText(getApplicationContext(),
-                        responseText, Toast.LENGTH_LONG).show();
-
+                finish();*/
+                List<String> contactsToAdd = new ArrayList<String>();
+                ArrayList<Country> countryList = dataAdapter.countryList;
+                for(int i=0;i<countryList.size();i++){
+                    Country country = countryList.get(i);
+                    if(country.isSelected()){
+                        contactsToAdd.add(country.getCode());
+                    }
+                }
+                contactsHandler.onLoginPerformed(user, password, contactsToAdd);
             }
         });
 
@@ -199,4 +221,7 @@ public class ListExistingContactsActivity extends Activity {
 
     }
 
+    public interface ContactsHandler{
+        void onLoginPerformed(String user, String password, List<String>requestedContacts);
+    }
 }
