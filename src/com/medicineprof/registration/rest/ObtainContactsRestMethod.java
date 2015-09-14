@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequestStatus> {
 
 	private Context mContext;
-    private String phone;
+    private String user;
     private String password;
     private String[] contactPhones;
     private String[] contactNames;
@@ -21,10 +21,10 @@ public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequest
 			.create("http://medicine-prof.com/index.php");
             //.create("http://192.168.100.5/index.php");
 
-	public ObtainContactsRestMethod(Context context, String phone, String password,
+	public ObtainContactsRestMethod(Context context, String user, String password,
                                     String[] contactPhones, String[] contactNames) {
 		mContext = context.getApplicationContext();
-        this.phone = phone;
+        this.user = user;
         this.password = password;
         this.contactPhones = contactPhones;
         this.contactNames = contactNames;
@@ -34,8 +34,8 @@ public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequest
 	protected Request buildRequest() {
         Request request = null;
         try {
-            String requestBody = "option=com_openfire&task=get_contacts&phone=";
-            requestBody = requestBody + URLEncoder.encode(phone, "UTF-8");
+            String requestBody = "option=com_openfire&task=get_contacts&user=";
+            requestBody = requestBody + URLEncoder.encode(user, "UTF-8");
             requestBody = requestBody + "&password=" + URLEncoder.encode(password, "UTF-8");
             for(int i = 0 ; i < contactPhones.length; i++){
                 requestBody = requestBody + "&contact_phones[]=" + URLEncoder.encode(contactPhones[i], "UTF-8");

@@ -86,7 +86,7 @@ class RegistrationCodeProcessor {
 
     }
 
-    void obtainContacts(String phone, String code, String[] phones, String[] names, RequestContactsCallback callback){
+    void obtainContacts(String user, String code, String[] phones, String[] names, RequestContactsCallback callback){
         // (4) Insert-Update the ContentProvider with a status column and
         // results column
         // Look at ContentProvider example, and build a content provider
@@ -98,7 +98,7 @@ class RegistrationCodeProcessor {
 
         @SuppressWarnings("unchecked")
         RestMethod<ContactsRequestStatus> verifyRegistrationCodeMethod =
-                RestMethodFactory.getInstance(mContext).getObtainContactsRestMethod(phone, code, phones,names);
+                RestMethodFactory.getInstance(mContext).getObtainContactsRestMethod(user, code, phones,names);
         RestMethodResult<ContactsRequestStatus> result = verifyRegistrationCodeMethod.execute();
 
 		/*

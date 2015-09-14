@@ -332,7 +332,7 @@ public class AccountLoginActivity
                 this.login = user;
                 this.password = password;
                 loginReady=true;
-                requestContacts(sPhone);
+                requestContacts(user);
             }else if("request_contacts".equals(intent.getStringExtra("type"))){
                 String[] phones = intent.getStringArrayExtra("phones");
                 String[] contacts = intent.getStringArrayExtra("names");
@@ -382,7 +382,7 @@ public class AccountLoginActivity
         RegistrationServiceHelper.getInstance(getApplicationContext()).verifyRegistrationCode(sPhone, code);
     }
 
-    private void requestContacts(String phone){
+    private void requestContacts(String user){
         List<Person> contacts = getContactList();
         String[] phones = new String[contacts.size()];
         String[] names = new String[contacts.size()];
@@ -392,7 +392,7 @@ public class AccountLoginActivity
             names[i] = person.getName();
             i++;
         }
-        RegistrationServiceHelper.getInstance(getApplicationContext()).requestContacts(phone, "", phones, names);
+        RegistrationServiceHelper.getInstance(getApplicationContext()).requestContacts(user, "", phones, names);
     }
 
     private List<Person> getContactList(){

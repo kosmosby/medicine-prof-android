@@ -109,7 +109,7 @@ public class RegistrationServiceHelper {
         return requestId;
     }
 
-    public long requestContacts(String phoneNumber, String code, String[] phones, String[] names){
+    public long requestContacts(String user, String code, String[] phones, String[] names){
 
         if(pendingRequests.containsKey(requestContactsHashkey)){
             return pendingRequests.get(requestContactsHashkey);
@@ -128,7 +128,7 @@ public class RegistrationServiceHelper {
         };
 
         Intent intent = new Intent(this.ctx, RegistrationService.class);
-        intent.putExtra(RegistrationService.PHONE_NUMBER_EXTRA, phoneNumber);
+        intent.putExtra(RegistrationService.USER_NAME_EXTRA, user);
         intent.putExtra(RegistrationService.REGISTRATION_CODE_EXTRA, code);
         intent.putExtra(RegistrationService.CONTACT_PHONES_EXTRA, phones);
         intent.putExtra(RegistrationService.CONTACT_NAMES_EXTRA, names);

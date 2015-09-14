@@ -11,6 +11,7 @@ public class RegistrationService extends IntentService {
 
 	public static final String RESOURCE_TYPE_EXTRA = "com.medicineprof.registration.service.RESOURCE_TYPE_EXTRA";
     public static final String PHONE_NUMBER_EXTRA = "com.medicineprof.registration.service.PHONE_NUMBER_EXTRA";
+    public static final String USER_NAME_EXTRA = "com.medicineprof.registration.service.USER_NAME_EXTRA";
     public static final String REGISTRATION_CODE_EXTRA = "com.medicineprof.registration.service.REGISTRATION_CODE_EXTRA";
     public static final String CONTACT_PHONES_EXTRA = "com.medicineprof.registration.service.CONTACT_PHONES_EXTRA";
     public static final String CONTACT_NAMES_EXTRA = "com.medicineprof.registration.service.CONTACT_NAMES_EXTRA";
@@ -59,13 +60,13 @@ public class RegistrationService extends IntentService {
             }
                 break;
             case RESOURCE_TYPE_REQUEST_CONTACTS: {
-                String phone = requestIntent.getStringExtra(PHONE_NUMBER_EXTRA);
+                String user = requestIntent.getStringExtra(USER_NAME_EXTRA);
                 String code = requestIntent.getStringExtra(REGISTRATION_CODE_EXTRA);
                 String[] phones = requestIntent.getStringArrayExtra(CONTACT_PHONES_EXTRA);
                 String[] contacts = requestIntent.getStringArrayExtra(CONTACT_NAMES_EXTRA);
 
                 RegistrationCodeProcessor processor = new RegistrationCodeProcessor(getApplicationContext());
-                processor.obtainContacts(phone, code, phones, contacts, makeObtainContactsCallback());
+                processor.obtainContacts(user, code, phones, contacts, makeObtainContactsCallback());
             }
             break;
 		default:
