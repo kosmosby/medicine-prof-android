@@ -4,6 +4,10 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import com.medicineprof.registration.model.Contact;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class RegistrationService extends IntentService {
 
@@ -13,7 +17,8 @@ public class RegistrationService extends IntentService {
     public static final String PHONE_NUMBER_EXTRA = "com.medicineprof.registration.service.PHONE_NUMBER_EXTRA";
     public static final String USER_NAME_EXTRA = "com.medicineprof.registration.service.USER_NAME_EXTRA";
     public static final String REGISTRATION_CODE_EXTRA = "com.medicineprof.registration.service.REGISTRATION_CODE_EXTRA";
-    public static final String CONTACT_PHONES_EXTRA = "com.medicineprof.registration.service.CONTACT_PHONES_EXTRA";
+    public static final String CONTACTS_EXTRA = "com.medicineprof.registration.service.CONTACT_PHONES_EXTRA";
+    public static final String CONTACT_PHONES_EXTRA = "com.medicineprof.registration.service.CONTACTS_EXTRA";
     public static final String CONTACT_NAMES_EXTRA = "com.medicineprof.registration.service.CONTACT_NAMES_EXTRA";
 
 	public static final int RESOURCE_TYPE_REQUEST_REGISTRATION_CODE = 1;
@@ -62,11 +67,10 @@ public class RegistrationService extends IntentService {
             case RESOURCE_TYPE_REQUEST_CONTACTS: {
                 String user = requestIntent.getStringExtra(USER_NAME_EXTRA);
                 String code = requestIntent.getStringExtra(REGISTRATION_CODE_EXTRA);
-                String[] phones = requestIntent.getStringArrayExtra(CONTACT_PHONES_EXTRA);
-                String[] contacts = requestIntent.getStringArrayExtra(CONTACT_NAMES_EXTRA);
+                List<Contact> contacts = (List<Contact>)requestIntent.getSerializableExtra(CONTACTS_EXTRA);
 
                 RegistrationCodeProcessor processor = new RegistrationCodeProcessor(getApplicationContext());
-                processor.obtainContacts(user, code, phones, contacts, makeObtainContactsCallback());
+                processor.obtainContacts(user, code, contacts, makeObtainContactsCallback());
             }
             break;
 		default:
@@ -114,13 +118,12 @@ public class RegistrationService extends IntentService {
         RequestContactsCallback callback = new RequestContactsCallback() {
 
             @Override
-            public void send(int resultCode, String status, String[]phones, String[]names) {
+            public void send(int resultCode, String status, List<Contact>contacts) {
                 if (mCallback != null) {
                     Bundle bundle = getOriginalIntentBundle();
                     bundle.putInt("resultCode", resultCode);
                     bundle.putString("status", status);
-                    bundle.putStringArray("phones", phones);
-                    bundle.putStringArray("contacts", names);
+                    bundle.putSerializable("contacts", (Serializable) contacts);
                     mCallback.send(resultCode, bundle);
                 }
             }

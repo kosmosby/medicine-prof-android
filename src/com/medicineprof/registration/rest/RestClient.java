@@ -32,7 +32,9 @@ public class RestClient {
 				conn.setDoOutput(false);
 				break;
 			case POST:
-				byte[] payload = request.getBody();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+                byte[] payload = request.getBody();
 				conn.setDoOutput(true);
 				conn.setFixedLengthStreamingMode(payload.length);
 				conn.getOutputStream().write(payload);
@@ -43,13 +45,13 @@ public class RestClient {
 
 			status = conn.getResponseCode();
 
-			if (conn.getContentLength() > 0) {
+			//if (conn.getContentLength() > 0) {
 				BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
 				byte[] body = readStream(in);
 				response = new Response(conn.getResponseCode(), conn.getHeaderFields(), body);
-			} else {
-				response = new Response(status, conn.getHeaderFields(), new byte[] {});
-			}
+			//} else {
+			//	response = new Response(status, conn.getHeaderFields(), new byte[] {});
+			//}
 
 		} catch (IOException e) {
 			e.printStackTrace();

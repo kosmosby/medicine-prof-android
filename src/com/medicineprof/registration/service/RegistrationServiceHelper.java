@@ -1,13 +1,13 @@
 package com.medicineprof.registration.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.Serializable;
+import java.util.*;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import com.medicineprof.registration.model.Contact;
 
 
 /**
@@ -109,7 +109,7 @@ public class RegistrationServiceHelper {
         return requestId;
     }
 
-    public long requestContacts(String user, String code, String[] phones, String[] names){
+    public long requestContacts(String user, String code, List<Contact> contacts){
 
         if(pendingRequests.containsKey(requestContactsHashkey)){
             return pendingRequests.get(requestContactsHashkey);
@@ -130,8 +130,7 @@ public class RegistrationServiceHelper {
         Intent intent = new Intent(this.ctx, RegistrationService.class);
         intent.putExtra(RegistrationService.USER_NAME_EXTRA, user);
         intent.putExtra(RegistrationService.REGISTRATION_CODE_EXTRA, code);
-        intent.putExtra(RegistrationService.CONTACT_PHONES_EXTRA, phones);
-        intent.putExtra(RegistrationService.CONTACT_NAMES_EXTRA, names);
+        intent.putExtra(RegistrationService.CONTACTS_EXTRA, (Serializable)contacts);
 
         intent.putExtra(RegistrationService.RESOURCE_TYPE_EXTRA,
                 RegistrationService.RESOURCE_TYPE_REQUEST_CONTACTS);
@@ -209,8 +208,7 @@ public class RegistrationServiceHelper {
             resultBroadcast.putExtra(EXTRA_RESULT_CODE, resultCode);
             resultBroadcast.putExtra("type", "request_contacts");
             resultBroadcast.putExtra("status", resultData.getString("status"));
-            resultBroadcast.putExtra("phones", resultData.getStringArray("phones"));
-            resultBroadcast.putExtra("names", resultData.getStringArray("contacts"));
+            resultBroadcast.putExtra("contacts", resultData.getSerializable("contacts"));
             ctx.sendBroadcast(resultBroadcast);
 
         }

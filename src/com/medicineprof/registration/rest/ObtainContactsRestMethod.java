@@ -1,6 +1,7 @@
 package com.medicineprof.registration.rest;
 
 import android.content.Context;
+import com.medicineprof.registration.model.Contact;
 import com.medicineprof.registration.rest.RestMethodFactory.Method;
 import com.medicineprof.registration.rest.resource.ContactsRequestStatus;
 import org.json.JSONObject;
@@ -8,26 +9,25 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.List;
 
 public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequestStatus> {
 
 	private Context mContext;
     private String user;
     private String password;
-    private String[] contactPhones;
-    private String[] contactNames;
+    private List<Contact>contacts;
 
 	private static final URI PROFILE_URI = URI
 			.create("http://medicine-prof.com/index.php");
             //.create("http://192.168.100.5/index.php");
 
 	public ObtainContactsRestMethod(Context context, String user, String password,
-                                    String[] contactPhones, String[] contactNames) {
+                                    List<Contact> contacts) {
 		mContext = context.getApplicationContext();
         this.user = user;
         this.password = password;
-        this.contactPhones = contactPhones;
-        this.contactNames = contactNames;
+        this.contacts = contacts;
 	}
 
 	@Override
@@ -37,12 +37,11 @@ public class ObtainContactsRestMethod extends AbstractRestMethod<ContactsRequest
             String requestBody = "option=com_openfire&task=get_contacts&user=";
             requestBody = requestBody + URLEncoder.encode(user, "UTF-8");
             requestBody = requestBody + "&password=" + URLEncoder.encode(password, "UTF-8");
-            for(int i = 0 ; i < contactPhones.length; i++){
-                requestBody = requestBody + "&contact_phones[]=" + URLEncoder.encode(contactPhones[i], "UTF-8");
+            for(Contact contact:contacts){
+                requestBody = requestBody + "&contact_phones[]=" + URLEncoder.encode(contact.getPhone(), "UTF-8");
+                requestBody = requestBody + "&contact_names[]=" + URLEncoder.encode(contact.getName(), "UTF-8");
             }
-            for(int i = 0 ; i < contactNames.length; i++){
-                requestBody = requestBody + "&contact_names[]=" + URLEncoder.encode(contactNames[i], "UTF-8");
-            }
+
             request = new Request(Method.POST, PROFILE_URI, null, requestBody.getBytes());
         }catch(UnsupportedEncodingException e){
 

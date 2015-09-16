@@ -7,12 +7,8 @@
 package org.jitsi.android.gui.account;
 
 import android.content.*;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
-import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
 import com.medicineprof.R;
 import com.medicineprof.registration.service.RegistrationServiceHelper;
 import com.medicineprof.registration.service.ServerResponseReceiver;
@@ -21,15 +17,10 @@ import net.java.sip.communicator.service.protocol.*;
 import net.java.sip.communicator.util.*;
 
 import org.jitsi.android.gui.*;
-import org.jitsi.android.gui.contactlist.ContactListUtils;
-import org.jitsi.android.gui.contactlist.ListExistingContactsFragment;
 import org.jitsi.android.gui.menu.*;
 import org.jitsi.android.gui.util.*;
 
 import org.osgi.framework.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The <tt>AccountLoginActivity</tt> is the activity responsible for creating
@@ -43,8 +34,7 @@ public class AccountLoginActivity
     implements
                PhoneRegistrationFragment.PhoneRegistrationListener,
                CodeVerificationFragment.CodeVerificationListener,
-               ServerResponseReceiver.ServerReponseListener,
-               ListExistingContactsFragment.ContactsHandler
+               ServerResponseReceiver.ServerReponseListener
 {
     private String sPhone;
     private String login;
@@ -197,8 +187,7 @@ public class AccountLoginActivity
     /**
      *
      */
-    @Override
-    public void onLoginPerformed(final String login, final String password, final List<String> contacts)
+    public void onLoginPerformed(final String login, final String password)
     {
         String network="Jabber";
         final ProtocolProviderService protocolProvider
@@ -207,35 +196,6 @@ public class AccountLoginActivity
 
         if (protocolProvider != null)
         {
-            new Thread(){
-                @Override
-                public void run() {
-                    //addAndroidAccount(protocolProvider);
-                    while(!protocolProvider.getRegistrationState().equals(RegistrationState.REGISTERED)){
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                        if(contacts!=null){
-                            for(String contactId:contacts){
-                                if(contactId.startsWith("+")){
-                                    contactId = contactId.substring(1);
-                                }
-                                ContactListUtils
-                                        .addContact(protocolProvider,
-                                                AndroidGUIActivator.getContactListService().getRoot(),
-                                                contactId);
-                            }
-                        }
-
-
-                }
-            }.start();
-
-
-
             Intent showContactsIntent = new Intent(Jitsi.ACTION_SHOW_CONTACTS);
             startActivity(showContactsIntent);
             finish();
@@ -332,20 +292,21 @@ public class AccountLoginActivity
                 this.login = user;
                 this.password = password;
                 loginReady=true;
-                requestContacts(user);
-            }else if("request_contacts".equals(intent.getStringExtra("type"))){
+                onLoginPerformed(user, password);
+                //requestContacts(user);
+            }/*else if("request_contacts".equals(intent.getStringExtra("type"))){
                 String[] phones = intent.getStringArrayExtra("phones");
                 String[] contacts = intent.getStringArrayExtra("names");
                 //showExistingContactsActivity(this.login, phones, contacts);
 
-                ListExistingContactsFragment fragment
-                        = ListExistingContactsFragment.createInstance(this.login, this.password, phones, contacts);
+                AddPhonebookContactsActivity fragment
+                        = AddPhonebookContactsActivity.createInstance(this.login, this.password, phones, contacts);
 
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(android.R.id.content, fragment)
                         .commit();
-            }
+            }*/
 
         }
     }
@@ -382,102 +343,4 @@ public class AccountLoginActivity
         RegistrationServiceHelper.getInstance(getApplicationContext()).verifyRegistrationCode(sPhone, code);
     }
 
-    private void requestContacts(String user){
-        List<Person> contacts = getContactList();
-        String[] phones = new String[contacts.size()];
-        String[] names = new String[contacts.size()];
-        int i = 0;
-        for(Person person:contacts){
-            phones[i] = person.getPhoneNum();
-            names[i] = person.getName();
-            i++;
-        }
-        RegistrationServiceHelper.getInstance(getApplicationContext()).requestContacts(user, "", phones, names);
-    }
-
-    private List<Person> getContactList(){
-        ArrayList<Person> contactList = new ArrayList<Person>();
-
-        Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
-        String[] PROJECTION = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME,
-                ContactsContract.Contacts.HAS_PHONE_NUMBER,
-        };
-        String SELECTION = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
-        Cursor contacts = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, PROJECTION, SELECTION, null, null);
-
-
-        if (contacts.getCount() > 0)
-        {
-            while(contacts.moveToNext()) {
-                Person aContact = new Person();
-                int idFieldColumnIndex = 0;
-                int nameFieldColumnIndex = 0;
-                int numberFieldColumnIndex = 0;
-
-                String contactId = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID));
-
-                nameFieldColumnIndex = contacts.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-                if (nameFieldColumnIndex > -1)
-                {
-                    aContact.setName(contacts.getString(nameFieldColumnIndex));
-                }
-
-                PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                final Cursor phone = managedQuery(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
-                if(phone.moveToFirst()) {
-                    while(!phone.isAfterLast())
-                    {
-                        numberFieldColumnIndex = phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                        if (numberFieldColumnIndex > -1)
-                        {
-                            aContact.setPhoneNum(phone.getString(numberFieldColumnIndex));
-                            phone.moveToNext();
-                            TelephonyManager mTelephonyMgr;
-                            mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                            if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhoneNum()))
-                            {
-                                contactList.add(aContact);
-                            }
-                        }
-                    }
-                }
-                phone.close();
-            }
-
-            contacts.close();
-        }
-
-        return contactList;
-    }
-
-    private void showExistingContactsActivity(String accountId, String[] phones, String[] contacts){
-        Intent i=new Intent(getApplicationContext(),ListExistingContactsFragment.class);
-        i.putExtra("phones", phones);
-        i.putExtra("contacts", contacts);
-        i.putExtra("accountId", accountId);
-        startActivity(i);
-    }
-
-    private class Person {
-        String myName = "";
-        String myNumber = "";
-
-        public String getName() {
-            return myName;
-        }
-
-        public void setName(String name) {
-            myName = name;
-        }
-
-        public String getPhoneNum() {
-            return myNumber;
-        }
-
-        public void setPhoneNum(String number) {
-            myNumber = number;
-        }
-    }
 }

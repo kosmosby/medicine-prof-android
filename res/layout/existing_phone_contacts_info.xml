@@ -3,24 +3,65 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="6dip" >
-
-  <CheckBox
-      android:id="@+id/checkBox1"
+                android:padding="6dip"
+                >
+  <RelativeLayout
+      android:id="@+id/avatarLayout"
+      android:layout_height="fill_parent"
+      android:layout_width="@dimen/contact_list_avatar_width"
+      android:padding="5dp"
+      android:layout_marginBottom="1dp"
+      android:layout_marginLeft="5dp">
+    <!--org.jitsi.android.gui.widgets.Rounded-->
+    <org.jitsi.android.gui.widgets.RoundedImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/pic"
+        android:src="@drawable/avatar" />
+  </RelativeLayout>
+  <RelativeLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_toRightOf="@+id/avatarLayout"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="8dip"
+      android:layout_marginRight="8dip"
+      android:layout_toLeftOf="@+id/callButtonLayout"
+      >
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#000000"/>
+  </RelativeLayout>
+  <LinearLayout
+      android:id="@+id/callButtonLayout"
+      android:orientation="horizontal"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
-      android:focusable="false"
-      android:focusableInTouchMode="false"
-      android:text="CheckBox" />
+      android:layout_height="fill_parent"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:focusable="true"
+      android:focusableInTouchMode="true"
+      android:clickable="true"
+      android:visibility="visible"
+      android:layout_marginRight="10dp"
+      android:minHeight="@dimen/min_button_height"
+      android:minWidth="@dimen/min_button_width">
 
-  <TextView
-      android:id="@+id/code"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignBaseline="@+id/checkBox1"
-      android:layout_alignBottom="@+id/checkBox1"
-      android:layout_toRightOf="@+id/checkBox1"
-      android:text="TextView" />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/addContact"
+        android:src="@drawable/logoblue"
+        android:visibility="gone"/>
+  </LinearLayout>
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="1dip"
+      android:layout_alignParentBottom="true"
+      android:background="@drawable/contact_list_h_separator"/>
 
 </RelativeLayout>

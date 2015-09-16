@@ -1,5 +1,6 @@
 package com.medicineprof.registration.service;
 
+import com.medicineprof.registration.model.Contact;
 import com.medicineprof.registration.provider.ProfileConstants;
 import com.medicineprof.registration.rest.RestMethod;
 import com.medicineprof.registration.rest.RestMethodFactory;
@@ -12,6 +13,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 import com.medicineprof.registration.rest.resource.VerifyCodeRequestStatus;
+
+import java.util.List;
 
 
 class RegistrationCodeProcessor {
@@ -86,7 +89,7 @@ class RegistrationCodeProcessor {
 
     }
 
-    void obtainContacts(String user, String code, String[] phones, String[] names, RequestContactsCallback callback){
+    void obtainContacts(String user, String code, List<Contact> contacts, RequestContactsCallback callback){
         // (4) Insert-Update the ContentProvider with a status column and
         // results column
         // Look at ContentProvider example, and build a content provider
@@ -98,7 +101,7 @@ class RegistrationCodeProcessor {
 
         @SuppressWarnings("unchecked")
         RestMethod<ContactsRequestStatus> verifyRegistrationCodeMethod =
-                RestMethodFactory.getInstance(mContext).getObtainContactsRestMethod(user, code, phones,names);
+                RestMethodFactory.getInstance(mContext).getObtainContactsRestMethod(user, code, contacts);
         RestMethodResult<ContactsRequestStatus> result = verifyRegistrationCodeMethod.execute();
 
 		/*
@@ -112,8 +115,7 @@ class RegistrationCodeProcessor {
         // (9) Operation complete callback to Service
 
         callback.send(result.getStatusCode(), result.getResource()!=null?result.getResource().getStatus():null,
-                result.getResource()!=null?result.getResource().getContactPhones():null,
-                result.getResource()!=null?result.getResource().getContactNames():null);
+                result.getResource()!=null?result.getResource().getContacts():null);
     }
 
 	private void updateContentProvider(RestMethodResult<RegistrationCodeRequestStatus> result) {

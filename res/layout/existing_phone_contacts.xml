@@ -2,18 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:orientation="vertical" >
+              android:orientation="vertical"
+              android:background="@color/white">
 
-  <TextView android:layout_width="fill_parent"
+  <!--TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:padding="10dp"
-            android:text="Some users from your phone book already use Medicine-prof! Do you want to add them?" android:textSize="20sp" />
+            android:text="Some users from your phone book already use Medicine-prof! Do you want to add them?" android:textSize="20sp" /-->
 
 
-  <Button
+  <!--Button
       android:id="@+id/addSelectedContacts"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="Add selected contacts" />
+      android:text="Add selected contacts" /-->
 
   <ListView android:id="@+id/listView1" android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

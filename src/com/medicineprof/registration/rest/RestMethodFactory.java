@@ -1,9 +1,12 @@
 package com.medicineprof.registration.rest;
 
+import com.medicineprof.registration.model.Contact;
 import com.medicineprof.registration.provider.ProfileConstants;
 
 import android.content.UriMatcher;
 import android.content.Context;
+
+import java.util.List;
 
 public class RestMethodFactory {
 
@@ -37,8 +40,8 @@ public class RestMethodFactory {
         return new VerifyCodeRestMethod(mContext, phone, code);
     }
     public RestMethod getObtainContactsRestMethod(String user,String code,
-                                                  String[] phones, String[] names){
-        return new ObtainContactsRestMethod(mContext, user, code, phones, names);
+                                                  List<Contact> contacts){
+        return new ObtainContactsRestMethod(mContext, user, code, contacts);
     }
 	public enum Method {
 		GET, POST, PUT, DELETE

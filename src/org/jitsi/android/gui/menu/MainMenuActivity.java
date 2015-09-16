@@ -84,7 +84,8 @@ public class MainMenuActivity
             startActivity(AccountLoginActivity.class);
             return true;
         case R.id.add_contact:
-            startActivity(AddContactActivity.class);
+            //startActivity(AddContactActivity.class);
+            startActivity(AddPhonebookContactsActivity.class);
             return true;
         case R.id.add_group:
             AddGroupDialog.showCreateGroupDialog(this, null);
