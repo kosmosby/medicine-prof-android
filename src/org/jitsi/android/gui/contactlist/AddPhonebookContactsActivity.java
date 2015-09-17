@@ -1,6 +1,7 @@
 package org.jitsi.android.gui.contactlist;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 import android.content.Context;
@@ -33,15 +34,18 @@ import net.java.sip.communicator.util.ServiceUtils;
 import net.java.sip.communicator.util.account.AccountUtils;
 import org.jitsi.android.gui.AndroidGUIActivator;
 import org.jitsi.service.osgi.OSGiActivity;
-import org.osgi.framework.BundleContext;
 
 public class AddPhonebookContactsActivity extends OSGiActivity
     implements ServerResponseReceiver.ServerReponseListener{
 
+    public static final String USER_ID_KEY =  "USER_ID_KEY";
+    public static final String CONTACTS_KEY = "CONTACTS_KEY";
+    public static final String AVATARS_KEY =  "AVATARS_KEY";
+
     MyCustomAdapter dataAdapter = null;
-    List<Contact> contactList;
-    AccountID acc;
-    final Map<String, Bitmap> avatars = new HashMap<String, Bitmap>();
+    private String userId = null;
+    Map<String, Bitmap> avatars = new HashMap<String, Bitmap>();
+    List<Contact> contacts;
     private ServerResponseReceiver broadcastReceiver;
 
     /**
@@ -60,7 +64,16 @@ public class AddPhonebookContactsActivity extends OSGiActivity
  2. Send contacts to the server and check who is added.
  3. Obtain response and display contacts list.
   */
-        displayListView();
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        View waitContainer = findViewById(R.id.loadingPanel);
+        waitContainer.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+
+        if(savedInstanceState!=null){
+            userId = savedInstanceState.getString(USER_ID_KEY);
+            contacts = (List<Contact>)savedInstanceState.getSerializable(CONTACTS_KEY);
+            avatars = (Map<String, Bitmap>)savedInstanceState.getSerializable(AVATARS_KEY);
+        }
     }
 
     @Override
@@ -70,6 +83,21 @@ public class AddPhonebookContactsActivity extends OSGiActivity
         registerReceiver(broadcastReceiver,
                 new IntentFilter(RegistrationServiceHelper.ACTION_REQUEST_RESULT));
 
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        if(contacts==null) {
+            new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    displayListView();
+                }
+            }.start();
+
+        }else{
+            showView();
+        }
+
     }
 
     @Override
@@ -78,18 +106,27 @@ public class AddPhonebookContactsActivity extends OSGiActivity
         unregisterReceiver(broadcastReceiver);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USER_ID_KEY, userId);
+        outState.putSerializable(CONTACTS_KEY, (Serializable) contacts);
+        outState.putSerializable(AVATARS_KEY, (Serializable) avatars);
+    }
 
     private void displayListView() {
-        contactList = getContactList();
-
+        List<Contact> contacts = getContactList();
         //Get current account
-        BundleContext osgiContext = AndroidGUIActivator.bundleContext;
-        AccountManager accountManager
-                = ServiceUtils.getService(osgiContext, AccountManager.class);
+        if(userId==null) {
+            AccountManager accountManager
+                    = ServiceUtils.getService(getBundlecontext(), AccountManager.class);
 
-        acc = accountManager.getStoredAccounts().iterator().next();
+            AccountID acc = accountManager.getStoredAccounts().iterator().next();
+            userId = acc.getUserID();
+        }
 
-        requestContacts(acc.getUserID());
+        RegistrationServiceHelper.getInstance(
+                getApplicationContext()).requestContacts(userId, "", contacts);
 
 
     }
@@ -133,7 +170,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                 }
 
                 PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                final Cursor phone = managedQuery(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
+                final Cursor phone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
                 if(phone.moveToFirst()) {
                     //while(!phone.isAfterLast())
                     //{
@@ -162,15 +199,13 @@ public class AddPhonebookContactsActivity extends OSGiActivity
     }
 
     private void requestContacts(String user){
-        List<Contact> contacts = getContactList();
-        RegistrationServiceHelper.getInstance(
-                getApplicationContext()).requestContacts(user, "", contacts);
+
     }
 
     @Override
     public void onServerResponse(Intent intent) {
         if("request_contacts".equals(intent.getStringExtra("type"))){
-            List<Contact> contacts = (List<Contact>)intent.getSerializableExtra("contacts");
+            contacts = (List<Contact>)intent.getSerializableExtra("contacts");
 
             Collections.sort(contacts, new Comparator<Contact>() {
                 @Override
@@ -195,18 +230,26 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                     contact.setContactAdded(false);
                 }
             }
-            //create an ArrayAdaptar from the String Array
-            dataAdapter = new MyCustomAdapter(this,
-                    R.layout.existing_phone_contacts_info, contacts);
-            ListView listView = (ListView) findViewById(R.id.listView1);
-            // Assign adapter to ListView
-            listView.setAdapter(dataAdapter);
+            showView();
 
         }
     }
+    private void showView(){
+        //create an ArrayAdaptar from the String Array
+        dataAdapter = new MyCustomAdapter(this,
+                R.layout.existing_phone_contacts_info, contacts);
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        // Assign adapter to ListView
+        listView.setAdapter(dataAdapter);
+        View waitContainer = findViewById(R.id.loadingPanel);
+        waitContainer.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
+    }
 
     private void addContact(String contactAddress, String displayName){
-        ProtocolProviderService pps = AccountUtils.getRegisteredProviderForAccount(acc);
+        ProtocolProviderService pps = AccountUtils.getRegisteredProviderForAccount(
+                AccountUtils.getAccountForID(userId)
+        );
         if (displayName != null && displayName.length() > 0)
         {
             addRenameListener(  pps,
@@ -331,15 +374,17 @@ public class AddPhonebookContactsActivity extends OSGiActivity
             holder.name.setText(contact.getName());
             //holder.name.setChecked(country.isSelected());
             holder.name.setTag(contact);
-            if(contact.isContactExists() && !contact.isContactAdded()){
+            if(contact.isContactExists() ){
                 holder.addContactIcon.setVisibility(View.VISIBLE);
-                holder.addContactIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        addContact(contact.getJabberUsername(), contact.getName());
-                        holderFinal.addContactIcon.setVisibility(View.INVISIBLE);
-                    }
-                });
+                if(!contact.isContactAdded()) {
+                    holder.addContactIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            addContact(contact.getJabberUsername(), contact.getName());
+                            holderFinal.addContactIcon.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
             }else{
                 holder.addContactIcon.setVisibility(View.GONE);
             }
