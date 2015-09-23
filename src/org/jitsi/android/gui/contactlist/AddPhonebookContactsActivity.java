@@ -33,6 +33,7 @@ import net.java.sip.communicator.service.protocol.ProtocolProviderService;
 import net.java.sip.communicator.util.ServiceUtils;
 import net.java.sip.communicator.util.account.AccountUtils;
 import org.jitsi.android.gui.AndroidGUIActivator;
+import org.jitsi.android.gui.chat.ChatSessionManager;
 import org.jitsi.service.osgi.OSGiActivity;
 
 public class AddPhonebookContactsActivity extends OSGiActivity
@@ -247,9 +248,9 @@ public class AddPhonebookContactsActivity extends OSGiActivity
     }
 
     private void addContact(String contactAddress, String displayName){
-        ProtocolProviderService pps = AccountUtils.getRegisteredProviderForAccount(
-                AccountUtils.getAccountForID(userId)
-        );
+        ProtocolProviderService pps =
+                AccountUtils.getRegisteredProviders().iterator().next();
+
         if (displayName != null && displayName.length() > 0)
         {
             addRenameListener(  pps,
@@ -262,6 +263,25 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                 .addContact(pps,
                         AndroidGUIActivator.getContactListService().getRoot(),
                         contactAddress);
+    }
+
+    private void startChat(String contactAddress){
+
+        if(AndroidGUIActivator.getContactListService().findAllMetaContactsForAddress(contactAddress).hasNext()){
+            MetaContact metaContact = AndroidGUIActivator.getContactListService().findAllMetaContactsForAddress(contactAddress).next();
+            Intent chatIntent = ChatSessionManager.getChatIntent(metaContact);
+
+            if(chatIntent != null)
+            {
+                finish();
+                startActivity(chatIntent);
+            }
+            else
+            {
+                //logger.warn("Failed to start chat with " + metaContact);
+            }
+        }
+
     }
 
     /**
@@ -291,6 +311,8 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                         {
                             renameContact(evt.getSourceMetaContact(),
                                     displayName);
+
+                            startChat(contactAddress);
                         }
                     }
 
@@ -342,6 +364,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
             TextView name;
             ImageView imageView;
             ImageView addContactIcon;
+            View row;
         }
 
         @Override
@@ -359,6 +382,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                 holder.name = (TextView) convertView.findViewById(R.id.name);
                 holder.imageView = (ImageView) convertView.findViewById(R.id.pic);
                 holder.addContactIcon = (ImageView) convertView.findViewById(R.id.addContact);
+                holder.row = convertView.findViewById(R.id.newContactLayout);
                 convertView.setTag(holder);
 
 
@@ -377,14 +401,23 @@ public class AddPhonebookContactsActivity extends OSGiActivity
             if(contact.isContactExists() ){
                 holder.addContactIcon.setVisibility(View.VISIBLE);
                 if(!contact.isContactAdded()) {
-                    holder.addContactIcon.setOnClickListener(new View.OnClickListener() {
+                    holder.row.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             addContact(contact.getJabberUsername(), contact.getName());
-                            holderFinal.addContactIcon.setVisibility(View.INVISIBLE);
+                            //holderFinal.addContactIcon.setVisibility(View.INVISIBLE);
+
+                        }
+                    });
+                }else{
+                    holder.row.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startChat(contact.getJabberUsername());
                         }
                     });
                 }
+
             }else{
                 holder.addContactIcon.setVisibility(View.GONE);
             }

@@ -4,6 +4,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="6dip"
+                android:id="@+id/newContactLayout"
                 >
   <RelativeLayout
       android:id="@+id/avatarLayout"
@@ -52,8 +53,8 @@
       android:minWidth="@dimen/min_button_width">
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/addContact"
         android:src="@drawable/logoblue"
         android:visibility="gone"/>
