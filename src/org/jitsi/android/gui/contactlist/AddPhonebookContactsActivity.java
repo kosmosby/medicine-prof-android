@@ -4,20 +4,21 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+import android.annotation.TargetApi;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.medicineprof.R;
 import com.medicineprof.registration.model.Contact;
@@ -34,6 +35,7 @@ import net.java.sip.communicator.util.ServiceUtils;
 import net.java.sip.communicator.util.account.AccountUtils;
 import org.jitsi.android.gui.AndroidGUIActivator;
 import org.jitsi.android.gui.chat.ChatSessionManager;
+import org.jitsi.android.gui.util.AndroidUtils;
 import org.jitsi.service.osgi.OSGiActivity;
 
 public class AddPhonebookContactsActivity extends OSGiActivity
@@ -48,6 +50,11 @@ public class AddPhonebookContactsActivity extends OSGiActivity
     Map<String, Bitmap> avatars = new HashMap<String, Bitmap>();
     List<Contact> contacts;
     private ServerResponseReceiver broadcastReceiver;
+
+    /**
+     * Search options menu items.
+     */
+    private MenuItem searchItem;
 
     /**
      * {@inheritDoc}
@@ -203,6 +210,77 @@ public class AddPhonebookContactsActivity extends OSGiActivity
 
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.phonebook_menu, menu);
+        super.onCreateOptionsMenu(menu);
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager
+                = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        this.searchItem = menu.findItem(R.id.search);
+
+        // OnActionExpandListener not supported prior API 14
+        if(AndroidUtils.hasAPI(14))
+        {
+            searchItem.setOnActionExpandListener(
+                    new MenuItem.OnActionExpandListener()
+                    {
+                        @Override
+                        public boolean onMenuItemActionCollapse(MenuItem item)
+                        {
+                            filterContactList("");
+
+                            return true; // Return true to collapse action view
+                        }
+                        public boolean onMenuItemActionExpand(MenuItem item)
+                        {
+                            return true; // Return true to expand action view
+                        }
+                    });
+        }
+
+        if(AndroidUtils.hasAPI(11))
+        {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
+
+            int id = searchView.getContext().getResources()
+                    .getIdentifier("android:id/search_src_text", null, null);
+            TextView textView = (TextView) searchView.findViewById(id);
+            textView.setTextColor(getResources().getColor(R.color.white));
+            textView.setHintTextColor(getResources().getColor(R.color.white));
+
+            bindSearchListener();
+        }
+        return true;
+    }
+
+    /**
+     * Filters contact list for given <tt>query</tt>.
+     * @param query the query string that will be used for filtering contacts.
+     */
+    private void filterContactList(String query) {
+        if(dataAdapter!=null){
+            dataAdapter.getFilter().filter(query);
+        }
+    }
+
+    private void bindSearchListener()
+    {
+        if(searchItem != null)
+        {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+
+            SearchViewListener listener = new SearchViewListener();
+            searchView.setOnQueryTextListener(listener);
+            searchView.setOnCloseListener(listener);
+        }
+    }
+
     @Override
     public void onServerResponse(Intent intent) {
         if("request_contacts".equals(intent.getStringExtra("type"))){
@@ -352,12 +430,16 @@ public class AddPhonebookContactsActivity extends OSGiActivity
     private class MyCustomAdapter extends ArrayAdapter<Contact> {
 
         private List<Contact> contactsList;
+        private List<Contact> contactsListOriginal;
 
         public MyCustomAdapter(Context context, int textViewResourceId,
                                List<Contact> contactsList) {
             super(context, textViewResourceId, contactsList);
             this.contactsList = new ArrayList<Contact>();
             this.contactsList.addAll(contactsList);
+
+            this.contactsListOriginal = new ArrayList<Contact>();
+            this.contactsListOriginal.addAll(contactsList);
         }
 
         private class ViewHolder {
@@ -440,5 +522,79 @@ public class AddPhonebookContactsActivity extends OSGiActivity
 
         }
 
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults result = new FilterResults();
+                    List<Contact> allContacts = contactsListOriginal;
+                    if(constraint == null || constraint.length() == 0){
+
+                        result.values = allContacts;
+                        result.count = allContacts.size();
+                    }else{
+                        ArrayList<Contact> filteredList = new ArrayList<Contact>();
+                        for(Contact j: allContacts){
+                            if((j.getName() != null &&
+                                    j.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
+                                    ||(j.getPhone()!=null && j.getPhone().contains(constraint)))
+                                filteredList.add(j);
+                        }
+                        result.values = filteredList;
+                        result.count = filteredList.size();
+                    }
+
+                    return result;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    if (filterResults.count == 0) {
+                        notifyDataSetInvalidated();
+                    } else {
+                        //items = (ArrayList<Contact>) filterResults.values;
+                        contactsList.clear();
+                        contactsList.addAll((ArrayList<Contact>)filterResults.values);
+                        notifyDataSetChanged();
+                    }
+                }
+            };
+        }
+    }
+
+
+    /**
+     * Class used to implement <tt>SearchView</tt> listeners for compatibility
+     * purposes.
+     *
+     */
+    class SearchViewListener
+            implements SearchView.OnQueryTextListener,
+            SearchView.OnCloseListener
+    {
+        @Override
+        public boolean onClose()
+        {
+            filterContactList("");
+
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String query)
+        {
+            filterContactList(query);
+
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query)
+        {
+            filterContactList(query);
+
+            return true;
+        }
     }
 }
