@@ -58,6 +58,19 @@
         android:id="@+id/addContact"
         android:src="@drawable/logoblue"
         android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/inviteButton"
+        android:text="SMS to Invite"
+        android:focusable="true"
+        android:textColor="#ffffff"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/signin_button"
+        android:layout_marginBottom="@dimen/between_padding"
+        android:visibility="gone"/>
+
   </LinearLayout>
   <LinearLayout
       android:layout_width="fill_parent"

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.*;
@@ -446,6 +448,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
             TextView name;
             ImageView imageView;
             ImageView addContactIcon;
+            View inviteButton;
             View row;
         }
 
@@ -464,6 +467,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                 holder.name = (TextView) convertView.findViewById(R.id.name);
                 holder.imageView = (ImageView) convertView.findViewById(R.id.pic);
                 holder.addContactIcon = (ImageView) convertView.findViewById(R.id.addContact);
+                holder.inviteButton = convertView.findViewById(R.id.inviteButton);
                 holder.row = convertView.findViewById(R.id.newContactLayout);
                 convertView.setTag(holder);
 
@@ -471,6 +475,10 @@ public class AddPhonebookContactsActivity extends OSGiActivity
             }
             else {
                 holder = (ViewHolder) convertView.getTag();
+            }
+
+            if(contactsList.size() <= position){
+                return convertView;
             }
 
             final Contact contact = contactsList.get(position);
@@ -499,9 +507,26 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                         }
                     });
                 }
-
+                holder.inviteButton.setVisibility(View.GONE);
             }else{
                 holder.addContactIcon.setVisibility(View.GONE);
+                holder.inviteButton.setVisibility(View.VISIBLE);
+                holder.inviteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
+                                new Intent(), 0);
+                        SmsManager sms = SmsManager.getDefault();
+                        sms.sendTextMessage(contact.getPhone(), null,"You are invited to use http://medicine-prof.com/android", null, null);
+                        Toast.makeText(getApplicationContext(), "SMS was sent to user " + contact.getName(),
+                                Toast.LENGTH_LONG).show();*/
+                        Uri uri = Uri.parse("smsto:" + contact.getPhone());
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                        intent.putExtra("sms_body", "You are invited to use http://medicine-prof.com/android");
+                        startActivity(intent);
+
+                    }
+                });
             }
             // Set image if exists
             try {
