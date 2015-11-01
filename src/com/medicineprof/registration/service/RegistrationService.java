@@ -52,8 +52,9 @@ public class RegistrationService extends IntentService {
 		switch (resourceType) {
 		    case RESOURCE_TYPE_REQUEST_REGISTRATION_CODE: {
                 String phone = requestIntent.getStringExtra(PHONE_NUMBER_EXTRA);
+                String userName = requestIntent.getStringExtra(USER_NAME_EXTRA);
                 RegistrationCodeProcessor processor = new RegistrationCodeProcessor(getApplicationContext());
-                processor.requestRegistrationCode(phone, makeProfileProcessorCallback());
+                processor.requestRegistrationCode(phone, userName, makeProfileProcessorCallback());
             }
                 break;
 

@@ -17,7 +17,7 @@
             android:gravity="left"
             android:textColor="@color/black"
             android:layout_marginRight="5dip"
-            android:text="You should recieve SMS with verification code soon. Please enter the code here:"/>
+            android:text="@string/login_user_verify_code_request"/>
 
         <EditText
             android:id="@+id/verificationCodeField"
@@ -32,7 +32,7 @@
 
         <Button
             android:id="@+id/verificationCodeButton"
-            android:text="Verify Code"
+            android:text="@string/login_user_verify_code"
             android:focusable="true"
             android:textColor="#ffffff"
             android:layout_width="wrap_content"

@@ -1309,5 +1309,13 @@
     <string name="pref_key_provisioning_METHOD">net.java.sip.communicator.plugin.provisioning.METHOD</string>
     <string name="pref_key_provisioning_UUID">net.java.sip.communicator.UUID</string>
 
-
+    <string name="account_login_empty_name_or_phone">Please provide your name and phone number</string>
+    <string name="account_login_eincomplete_data">Incomplete data</string>
+  <string name="account_login_enter_phone">Enter your phone number.Use full country code.</string>
+  <string name="account_login_enter_name">Enter your Name.</string>
+  <string name="account_login_verify_phone">Verify Phone</string>
+  <string name="login_user_verify_code">Verify Code</string>
+  <string name="login_user_verify_code_request">You should recieve SMS with verification code soon. Please enter the
+    code here:
+  </string>
 </resources>

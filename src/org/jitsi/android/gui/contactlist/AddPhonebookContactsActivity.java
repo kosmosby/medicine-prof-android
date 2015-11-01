@@ -149,6 +149,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                 ContactsContract.Contacts.DISPLAY_NAME,
                 ContactsContract.Contacts.HAS_PHONE_NUMBER,
                 ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+
         };
         String SELECTION = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
         Cursor contacts = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, PROJECTION, SELECTION, null, null);
@@ -156,20 +157,22 @@ public class AddPhonebookContactsActivity extends OSGiActivity
 
         if (contacts.getCount() > 0)
         {
+            final int columnIdIndex = contacts.getColumnIndex(ContactsContract.Contacts._ID);
+            final int nameFieldColumnIndex = contacts.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+            //final int numberFieldColumnIndex = contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            final int imageUriColumnIndex = contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI);
             while(contacts.moveToNext()) {
                 Bitmap bit_thumb = null;
                 Contact aContact = new Contact();
-                int nameFieldColumnIndex = 0;
-                int numberFieldColumnIndex = 0;
 
-                String contactId = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID));
+                String contactId = contacts.getString(columnIdIndex);
 
-                nameFieldColumnIndex = contacts.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+
                 if (nameFieldColumnIndex > -1)
                 {
                     aContact.setName(contacts.getString(nameFieldColumnIndex));
                 }
-                String image_thumb = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
+                String image_thumb = contacts.getString(imageUriColumnIndex);
                 try {
                     if (image_thumb != null) {
                         bit_thumb = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(image_thumb));
@@ -179,23 +182,27 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                     e.printStackTrace();
                 }
 
+                //aContact.setPhone(contacts.getString(numberFieldColumnIndex));
+                //contactList.add(aContact);
+                //avatars.put(aContact.getPhone(), bit_thumb);
+
                 PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
                 final Cursor phone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
                 if(phone.moveToFirst()) {
                     //while(!phone.isAfterLast())
                     //{
-                        numberFieldColumnIndex = phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                        int numberFieldColumnIndex = phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                         if (numberFieldColumnIndex > -1)
                         {
                             aContact.setPhone(phone.getString(numberFieldColumnIndex));
                             phone.moveToNext();
-                            TelephonyManager mTelephonyMgr;
-                            mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                            if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhone()))
-                            {
+                            //TelephonyManager mTelephonyMgr;
+                            //mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                            //if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhone()))
+                            //{
                                 contactList.add(aContact);
                                 avatars.put(aContact.getPhone(), bit_thumb);
-                            }
+                            //}
                         }
                     //}
                 }
@@ -288,27 +295,29 @@ public class AddPhonebookContactsActivity extends OSGiActivity
         if("request_contacts".equals(intent.getStringExtra("type"))){
             contacts = (List<Contact>)intent.getSerializableExtra("contacts");
 
-            Collections.sort(contacts, new Comparator<Contact>() {
-                @Override
-                public int compare(Contact contact, Contact t1) {
-                    if(contact.isContactExists() && !t1.isContactExists()){
-                        return -1;
+            if(contacts!=null){
+                Collections.sort(contacts, new Comparator<Contact>() {
+                    @Override
+                    public int compare(Contact contact, Contact t1) {
+                        if(contact.isContactExists() && !t1.isContactExists()){
+                            return -1;
+                        }
+                        if(t1.isContactExists() && !contact.isContactExists()){
+                            return 1;
+                        }
+                        if(contact.getName()==null){
+                            return 1;
+                        }
+                        return contact.getName().compareTo(t1.getName());
                     }
-                    if(t1.isContactExists() && !contact.isContactExists()){
-                        return 1;
+                });
+                for(Contact contact:contacts){
+                    if(contact.getJabberUsername()!=null&&
+                            AndroidGUIActivator.getContactListService().findAllMetaContactsForAddress(contact.getJabberUsername()).hasNext()){
+                        contact.setContactAdded(true);
+                    }else{
+                        contact.setContactAdded(false);
                     }
-                    if(contact.getName()==null){
-                        return 1;
-                    }
-                    return contact.getName().compareTo(t1.getName());
-                }
-            });
-            for(Contact contact:contacts){
-                if(contact.getJabberUsername()!=null&&
-                        AndroidGUIActivator.getContactListService().findAllMetaContactsForAddress(contact.getJabberUsername()).hasNext()){
-                    contact.setContactAdded(true);
-                }else{
-                    contact.setContactAdded(false);
                 }
             }
             showView();

@@ -100,12 +100,13 @@ public class PhoneRegistrationFragment
 
                 final EditText phoneField
                     = (EditText) content.findViewById(R.id.userPhoneField);
-
+                final EditText userNameField
+                        = (EditText) content.findViewById(R.id.userNameField);
 
                 String phone = phoneField.getText().toString();
+                String userName = userNameField.getText().toString();
 
-
-                phoneRegistrationListener.onPhoneEntered(phone);
+                phoneRegistrationListener.onPhoneEntered(phone, userName);
             }
         });
     }
@@ -189,6 +190,6 @@ public class PhoneRegistrationFragment
          * Method is called when user click the verify phone button.
          * @param phone the phone entered by the user.
          */
-        void onPhoneEntered(String phone);
+        void onPhoneEntered(String phone, String name);
     }
 }

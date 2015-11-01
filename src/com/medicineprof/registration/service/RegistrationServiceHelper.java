@@ -48,7 +48,7 @@ public class RegistrationServiceHelper {
 		return instance;		
 	}
 
-	public long requestRegistrationCode(String phoneNumber){
+	public long requestRegistrationCode(String phoneNumber, String userName){
 
 		if(pendingRequests.containsKey(registrationCodeHashkey)){
 			return pendingRequests.get(registrationCodeHashkey);
@@ -68,6 +68,7 @@ public class RegistrationServiceHelper {
 
 		Intent intent = new Intent(this.ctx, RegistrationService.class);
 		intent.putExtra(RegistrationService.PHONE_NUMBER_EXTRA, phoneNumber);
+        intent.putExtra(RegistrationService.USER_NAME_EXTRA, userName);
 		intent.putExtra(RegistrationService.RESOURCE_TYPE_EXTRA,
 				RegistrationService.RESOURCE_TYPE_REQUEST_REGISTRATION_CODE);
 		intent.putExtra(RegistrationService.SERVICE_CALLBACK, serviceCallback);

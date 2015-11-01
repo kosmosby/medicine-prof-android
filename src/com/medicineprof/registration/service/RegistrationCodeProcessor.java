@@ -27,20 +27,13 @@ class RegistrationCodeProcessor {
 		mContext = context;
 	}
 
-	void requestRegistrationCode(String phone, RegistrationCodeCallback callback) {
+	void requestRegistrationCode(String phone, String userName, RegistrationCodeCallback callback) {
 
-		// (4) Insert-Update the ContentProvider with a status column and
-		// results column
-		// Look at ContentProvider example, and build a content provider
-		// that tracks the necessary data.
 
-		// (5) Call the REST method
-		// Create a RESTMethod class that knows how to assemble the URL,
-		// and performs the HTTP operation.
 
 		@SuppressWarnings("unchecked")
 		RestMethod<RegistrationCodeRequestStatus> requestRegistrationCodeMethod =
-                RestMethodFactory.getInstance(mContext).getCreateRegistrationCodeRestMethod(phone);
+                RestMethodFactory.getInstance(mContext).getCreateRegistrationCodeRestMethod(phone, userName);
 		RestMethodResult<RegistrationCodeRequestStatus> result = requestRegistrationCodeMethod.execute();
 
 		/*

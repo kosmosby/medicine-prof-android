@@ -204,11 +204,18 @@ public class AccountLoginActivity
     }
 
     @Override
-    public void onPhoneEntered(String phone) {
-        showWaitScreen();
-        sPhone = phone;
-        RegistrationServiceHelper.getInstance(getApplicationContext()).requestRegistrationCode(phone);
-        //requestContacts(phone);
+    public void onPhoneEntered(String phone, String name) {
+        if(phone!=null && name != null && (!name.isEmpty()) && (!phone.isEmpty())) {
+            showWaitScreen();
+            sPhone = phone;
+            RegistrationServiceHelper.getInstance(getApplicationContext()).requestRegistrationCode(phone, name);
+        }else{
+            AndroidUtils.showAlertDialog(
+                    this,
+                    R.string.account_login_eincomplete_data,
+                    R.string.account_login_empty_name_or_phone);
+
+        }
     }
 
     private void showWaitScreen(){

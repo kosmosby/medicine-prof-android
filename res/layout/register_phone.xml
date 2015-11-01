@@ -16,7 +16,7 @@
             android:gravity="left"
             android:textColor="@color/black"
             android:layout_marginRight="5dip"
-            android:text="Enter your phone number.Use full country code."/>
+            android:text="@string/account_login_enter_phone"/>
 
         <EditText
             android:id="@+id/userPhoneField"
@@ -29,9 +29,31 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/between_padding"/>
 
+        <TextView
+            android:id="@+id/registerNameText"
+            style="@style/MediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:layout_marginRight="5dip"
+            android:text="@string/account_login_enter_name"/>
+
+        <EditText
+            android:id="@+id/userNameField"
+            style="@style/JitsiLoginTextView"
+            android:hint=""
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/item_height"
+            android:padding="10dp"
+            android:inputType="text"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/between_padding"/>
+
         <Button
             android:id="@+id/registerPhoneButton"
-            android:text="Verify Phone"
+            android:text="@string/account_login_verify_phone"
             android:focusable="true"
             android:textColor="#ffffff"
             android:layout_width="wrap_content"

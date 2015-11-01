@@ -33,8 +33,8 @@ public class RestMethodFactory {
 		return instance;
 	}
 
-	public RestMethod getCreateRegistrationCodeRestMethod(String phone) {
-        return new CreateRegistrationCodeRestMethod(mContext, phone);
+	public RestMethod getCreateRegistrationCodeRestMethod(String phone, String userName) {
+        return new CreateRegistrationCodeRestMethod(mContext, phone, userName);
 	}
     public RestMethod getVerifyCodeRestMethod(String phone, String code) {
         return new VerifyCodeRestMethod(mContext, phone, code);
