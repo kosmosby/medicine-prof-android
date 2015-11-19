@@ -11,6 +11,7 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.medicineprof.utils.PhoneBookUtils;
 import net.java.sip.communicator.service.contactlist.*;
 import net.java.sip.communicator.service.protocol.*;
 
@@ -61,18 +62,22 @@ public class AuthorizationRequestedDialog
             throw new IllegalArgumentException();
 
         this.request = AuthorizationHandlerImpl.getRequest(requestId);
+        String contactName = PhoneBookUtils.findContactNameIfExists(this.request.contact.getAddress(), getContentResolver());
+        if(contactName==null){
+            contactName = request.contact.getDisplayName();
+        }
 
         View content = findViewById(android.R.id.content);
 
         ViewUtil.setTextViewValue(
                 content, R.id.requestInfo,
                 getString(R.string.service_gui_AUTHORIZATION_REQUESTED_INFO,
-                          request.contact.getDisplayName()));
+                        contactName));
 
         ViewUtil.setTextViewValue(
                 content, R.id.addToContacts,
                 getString(R.string.service_gui_ADD_AUTHORIZED_CONTACT,
-                          request.contact.getDisplayName()));
+                        contactName));
 
         Spinner contactGroupSpinner
                 = (Spinner) findViewById(R.id.selectGroupSpinner);
@@ -175,10 +180,9 @@ public class AuthorizationRequestedDialog
             Spinner groupSpinner
                     = (Spinner) findViewById(R.id.selectGroupSpinner);
 
-            ContactListUtils.addContact(
-                    request.contact.getProtocolProvider(),
-                    (MetaContactGroup) groupSpinner.getSelectedItem(),
-                    request.contact.getAddress());
+            ContactListUtil.addContact(
+                    request.contact.getAddress(),
+                    request.contact.getDisplayName(),null);
         }
 
         request.notifyResponseReceived(responseCode);

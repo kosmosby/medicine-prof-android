@@ -38,6 +38,7 @@ import net.java.sip.communicator.util.account.AccountUtils;
 import org.jitsi.android.gui.AndroidGUIActivator;
 import org.jitsi.android.gui.chat.ChatSessionManager;
 import org.jitsi.android.gui.util.AndroidUtils;
+import org.jitsi.android.gui.util.ContactListUtil;
 import org.jitsi.service.osgi.OSGiActivity;
 
 public class AddPhonebookContactsActivity extends OSGiActivity
@@ -144,34 +145,46 @@ public class AddPhonebookContactsActivity extends OSGiActivity
     private List<Contact> getContactList(){
         ArrayList<Contact> contactList = new ArrayList<Contact>();
 
-        String[] PROJECTION = new String[] {
+        String[] PROJECTION = null;/*new String[] {
                 ContactsContract.Contacts._ID,
                 ContactsContract.Contacts.DISPLAY_NAME,
-                ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                ContactsContract.CommonDataKinds.Phone.PHONE,
                 ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
 
-        };
-        String SELECTION = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
-        Cursor contacts = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, PROJECTION, SELECTION, null, null);
+        };*/
+        String SELECTION = null;//ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
+        Cursor contacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, SELECTION, null, null);
 
 
-        if (contacts.getCount() > 0)
-        {
+        if (contacts.getCount() > 0) {
             final int columnIdIndex = contacts.getColumnIndex(ContactsContract.Contacts._ID);
             final int nameFieldColumnIndex = contacts.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-            //final int numberFieldColumnIndex = contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            final int numberFieldColumnIndex = contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             final int imageUriColumnIndex = contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI);
-            while(contacts.moveToNext()) {
+            Set<String> kp = new HashSet<String>();
+            Set<String> kn = new HashSet<String>();
+            while (contacts.moveToNext()) {
                 Bitmap bit_thumb = null;
                 Contact aContact = new Contact();
 
-                String contactId = contacts.getString(columnIdIndex);
+                String phone = contacts.getString(numberFieldColumnIndex);
+                String name = contacts.getString(nameFieldColumnIndex);
 
-
-                if (nameFieldColumnIndex > -1)
-                {
-                    aContact.setName(contacts.getString(nameFieldColumnIndex));
+                if (phone == null) {
+                    continue;
                 }
+                if (kp.contains(phone)) {
+                    continue;
+                }
+                if (kn.contains(name)) {
+                    continue;
+                }
+                kp.add(phone);
+                kn.add(name);
+
+                aContact.setPhone(phone);
+                aContact.setName(name);
+
                 String image_thumb = contacts.getString(imageUriColumnIndex);
                 try {
                     if (image_thumb != null) {
@@ -182,41 +195,11 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                     e.printStackTrace();
                 }
 
-                //aContact.setPhone(contacts.getString(numberFieldColumnIndex));
-                //contactList.add(aContact);
-                //avatars.put(aContact.getPhone(), bit_thumb);
-
-                PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                final Cursor phone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, ContactsContract.Data.CONTACT_ID + "=?", new String[]{String.valueOf(contactId)}, null);
-                if(phone.moveToFirst()) {
-                    //while(!phone.isAfterLast())
-                    //{
-                        int numberFieldColumnIndex = phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                        if (numberFieldColumnIndex > -1)
-                        {
-                            aContact.setPhone(phone.getString(numberFieldColumnIndex));
-                            phone.moveToNext();
-                            //TelephonyManager mTelephonyMgr;
-                            //mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                            //if (!mTelephonyMgr.getLine1Number().contains(aContact.getPhone()))
-                            //{
-                                contactList.add(aContact);
-                                avatars.put(aContact.getPhone(), bit_thumb);
-                            //}
-                        }
-                    //}
-                }
-                phone.close();
+                contactList.add(aContact);
+                avatars.put(aContact.getPhone(), bit_thumb);
             }
-
-            contacts.close();
         }
-
         return contactList;
-    }
-
-    private void requestContacts(String user){
-
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -336,23 +319,7 @@ public class AddPhonebookContactsActivity extends OSGiActivity
         listView.setVisibility(View.VISIBLE);
     }
 
-    private void addContact(String contactAddress, String displayName){
-        ProtocolProviderService pps =
-                AccountUtils.getRegisteredProviders().iterator().next();
 
-        if (displayName != null && displayName.length() > 0)
-        {
-            addRenameListener(  pps,
-                    null,
-                    contactAddress,
-                    displayName);
-        }
-
-        ContactListUtils
-                .addContact(pps,
-                        AndroidGUIActivator.getContactListService().getRoot(),
-                        contactAddress);
-    }
 
     private void startChat(String contactAddress){
 
@@ -373,70 +340,9 @@ public class AddPhonebookContactsActivity extends OSGiActivity
 
     }
 
-    /**
-     * Adds a rename listener.
-     *
-     * @param protocolProvider the protocol provider to which the contact was
-     * added
-     * @param metaContact the <tt>MetaContact</tt> if the new contact was added
-     * to an existing meta contact
-     * @param contactAddress the address of the newly added contact
-     * @param displayName the new display name
-     */
-    private void addRenameListener(
-            final ProtocolProviderService protocolProvider,
-            final MetaContact metaContact,
-            final String contactAddress,
-            final String displayName)
-    {
-        AndroidGUIActivator.getContactListService().addMetaContactListListener(
-                new MetaContactListAdapter()
-                {
-                    @Override
-                    public void metaContactAdded(MetaContactEvent evt)
-                    {
-                        if (evt.getSourceMetaContact().getContact(
-                                contactAddress, protocolProvider) != null)
-                        {
-                            renameContact(evt.getSourceMetaContact(),
-                                    displayName);
 
-                            startChat(contactAddress);
-                        }
-                    }
 
-                    @Override
-                    public void protoContactAdded(ProtoContactEvent evt)
-                    {
-                        if (metaContact != null
-                                && evt.getNewParent().equals(metaContact))
-                        {
-                            renameContact(metaContact, displayName);
-                        }
-                    }
-                });
-    }
 
-    /**
-     * Renames the given meta contact.
-     *
-     * @param metaContact the <tt>MetaContact</tt> to rename
-     * @param displayName the new display name
-     */
-    private void renameContact( final MetaContact metaContact,
-                                final String displayName)
-    {
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                AndroidGUIActivator.getContactListService()
-                        .renameMetaContact( metaContact,
-                                displayName);
-            }
-        }.start();
-    }
 
     private class MyCustomAdapter extends ArrayAdapter<Contact> {
 
@@ -503,7 +409,14 @@ public class AddPhonebookContactsActivity extends OSGiActivity
                     holder.row.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            addContact(contact.getJabberUsername(), contact.getName());
+                            ContactListUtil.addContact(contact.getJabberUsername(), contact.getName(),
+                                    new ContactListUtil.ContactAddedListener(){
+
+                                        @Override
+                                        public void contactAdded(String address) {
+                                            startChat(address);
+                                        }
+                                    });
                             //holderFinal.addContactIcon.setVisibility(View.INVISIBLE);
 
                         }
