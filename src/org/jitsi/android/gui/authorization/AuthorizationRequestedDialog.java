@@ -46,6 +46,8 @@ public class AuthorizationRequestedDialog
     AuthorizationResponse.AuthorizationResponseCode responseCode
             = AuthorizationResponse.IGNORE;
 
+    String contactName = null;
+
     /**
      * {@inheritDoc}
      */
@@ -62,7 +64,7 @@ public class AuthorizationRequestedDialog
             throw new IllegalArgumentException();
 
         this.request = AuthorizationHandlerImpl.getRequest(requestId);
-        String contactName = PhoneBookUtils.findContactNameIfExists(this.request.contact.getAddress(), getContentResolver());
+        contactName = PhoneBookUtils.findContactNameIfExists(this.request.contact.getAddress(), getContentResolver());
         if(contactName==null){
             contactName = request.contact.getDisplayName();
         }
@@ -182,7 +184,7 @@ public class AuthorizationRequestedDialog
 
             ContactListUtil.addContact(
                     request.contact.getAddress(),
-                    request.contact.getDisplayName(),null);
+                    contactName,null);
         }
 
         request.notifyResponseReceived(responseCode);

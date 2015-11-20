@@ -36,7 +36,7 @@
     <string name="service_gui_CONTACT_TYPING">печатает</string>
     <string name="service_gui_BUSY_STATUS">Занят</string>
 
-    <string name="service_gui_ADD_AUTHORIZED_CONTACT">%s в список контактов</string>
+    <string name="service_gui_ADD_AUTHORIZED_CONTACT">Добавить %s в список контактов</string>
     <string name="service_gui_ADD_GROUP_LOCAL_ERROR">Не удалось добавить группу с %s Проблема возникла во время операции ввода-вывода.</string>
     <string name="service_gui_ADD_GROUP_EXIST_ERROR">%s уже существует в вашем списке контактов. Пожалуйста, выберите другое имя.</string>
     <string name="service_gui_ADD_GROUP_NET_ERROR">Не удалось добавить группу с %s Проблема возникла из-за сбоя сети. Пожалуйста, проверьте подключение к сети и повторите попытку.</string>
@@ -49,11 +49,11 @@
     <string name="service_gui_AUTHENTICATION_WINDOW_TITLE">%s аутентификация</string>
     <string name="service_gui_AUTHENTICATION_REQUESTED">Аутентификация запрос</string>
     <string name="service_gui_AUTHENTICATION_REQUESTED_SERVER">%s запросил проверку подлинности.</string>
-    <string name="service_gui_AUTHORIZE">Санкционировать</string>
+    <string name="service_gui_AUTHORIZE">Разрешить</string>
     <string name="service_gui_AUTHORIZATION_ACCEPTED">контакт принял ваш запрос авторизации.</string>
     <string name="service_gui_AUTHORIZATION_REQUESTED">Запрос авторизации</string>
-    <string name="service_gui_AUTHORIZATION_REQUESTED_INFO">%s контакт просит вашего разрешения.</string>
-    <string name="service_gui_AUTHORIZATION_RESPONSE">Ответ Авторизация</string>
+    <string name="service_gui_AUTHORIZATION_REQUESTED_INFO">Контакт %s  просит вашего разрешения на авторизацию.</string>
+    <string name="service_gui_AUTHORIZATION_RESPONSE">Ответ Авторизации</string>
     <string name="service_gui_CREATE_GROUP_NAME">В поле ниже введите имя группы, которую вы хотите создать.</string>
     <string name="service_gui_DENY">Отклонить</string>
     <string name="service_gui_DURATION">продолжительность</string>
@@ -288,7 +288,7 @@
     <string name="service_gui_DISPLAY_NAME">Отображаемое имя</string>
     <string name="service_gui_SELECT_ACCOUNT">Выбор счета</string>
     <string name="service_gui_SELECT_GROUP">Выберите группу</string>
-    <string name="service_gui_SELECT_NO_GROUP">Нет Группа</string>
+    <string name="service_gui_SELECT_NO_GROUP">Нет Группы</string>
 
     <!-- Presence status -->
     <string name="service_gui_EDIT_STATUS_MSG_TIP">Набор статусное сообщение</string>
@@ -371,7 +371,7 @@
     <HTML> {0} Не возможно  проверить личность соединительной клиента. <br/> <br/> Сертификат не является доверенным, что означает, что идентичность клиента не может <br/> автоматически проверяется. Вы хотите принять соединение? <br/> <br/> Для получения дополнительной информации, нажмите кнопку \"Показать сертификат\". </HTML></string>
     <string name="service_gui_CERT_DIALOG_PEER_DESCRIPTION_TXT">
     <HTML> {0} Не возможно проверить личность контакта {1}. <br/> <br/> Сертификат не является доверенным, что означает, что личность контакта не может <br/> автоматически проверяется. Вы хотите продолжить подключения? <br/> <br/> Для получения дополнительной информации, нажмите \"Показать сертификат\". </HTML></string>
-    <string name="service_gui_CONTINUE_ANYWAY">Продолжай в любом случае</string>
+    <string name="service_gui_CONTINUE_ANYWAY">Продолжить в любом случае</string>
     <string name="service_gui_CERT_INFO_ISSUED_TO"><HTML> <B> выдан </B> </HTML></string>
     <string name="service_gui_CERT_INFO_CN">Распространенное имя:</string>
     <string name="service_gui_CERT_INFO_O">Организация:</string>
